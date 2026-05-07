@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Job Posting as Outbound Sales Signal - Bright Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #000000;
+      color: #E5E7EB;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topbar { padding: 18px 32px; display: flex; align-items: center; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .breadcrumb img { height: 22px; }
+    .breadcrumb span.divider { color: #4A5568; }
+    .breadcrumb a { color: #8B95A5; text-decoration: none; font-weight: 400; }
+    .breadcrumb a:hover { color: #fff; }
+    .breadcrumb span.current { color: #fff; font-weight: 500; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin: 32px 40px 0; font-size: 14px; font-weight: 500;
+      color: #8B95A5; text-decoration: none; transition: color 0.2s;
+    }
+    .back-link:hover { color: #60A5FA; }
+    .back-link svg { width: 16px; height: 16px; }
+
+    .detail-hero { max-width: 800px; margin: 24px auto 0; padding: 0 40px; }
+    .detail-hero h1 {
+      font-size: 36px; font-weight: 700; color: #FFFFFF;
+      letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .detail-hero p { font-size: 16px; color: #8B95A5; max-width: 640px; }
+
+    .platform-tabs {
+      max-width: 800px; margin: 40px auto 0; padding: 0 40px;
+      display: flex; gap: 0;
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+    }
+    .platform-tab {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 24px; font-size: 15px; font-weight: 600;
+      color: #FFFFFF; background: none; border: none; cursor: pointer;
+      border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+    }
+    .platform-tab img { height: 18px; }
+    .platform-tab img[alt="n8n"] { height: 18px; width: 18px; border-radius: 4px; }
+    .platform-tab:hover { color: #60A5FA; }
+    .platform-tab.active { color: #3B82F6; border-bottom-color: #3B82F6; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .steps-container { max-width: 800px; margin: 0 auto; padding: 40px 40px 80px; }
+
+    .step { display: flex; gap: 20px; margin-bottom: 40px; }
+    .step-number {
+      flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(59,130,246,0.12); color: #3B82F6;
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-content { flex: 1; }
+    .step-title { font-size: 17px; font-weight: 700; color: #FFFFFF; margin-bottom: 8px; }
+    .step-desc { font-size: 15px; color: #8B95A5; line-height: 1.7; }
+    .step-desc code {
+      background: rgba(59,130,246,0.12); padding: 2px 7px; border-radius: 5px;
+      font-size: 13px; color: #93C5FD;
+    }
+    .step-desc ul { margin-top: 8px; padding-left: 20px; }
+    .step-desc li { margin-bottom: 4px; }
+    .step-desc strong { color: #E2E8F0; font-weight: 600; }
+
+    .callout {
+      background: rgba(59,130,246,0.08);
+      border-left: 3px solid #3B82F6;
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px; margin: 32px 0;
+      font-size: 14px; color: #93C5FD; line-height: 1.7;
+    }
+    .callout strong { font-weight: 700; color: #FFFFFF; }
+    .get-template-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 8px; padding: 10px 22px;
+      background: #3B82F6; color: #fff;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      border: none; border-radius: 9999px; cursor: pointer;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .get-template-btn:hover { background: #2563EB; }
+    .get-template-btn img { height: 18px; }
+
+    .code-block {
+      background: #0A0E1A;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 12px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      color: #93C5FD;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .troubleshooting { margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .troubleshooting h3 { font-size: 18px; font-weight: 700; color: #FFFFFF; margin-bottom: 16px; }
+    .troubleshooting table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .troubleshooting th {
+      text-align: left; padding: 10px 14px;
+      background: rgba(59,130,246,0.08); font-weight: 600; color: #FFFFFF;
+    }
+    .troubleshooting th:first-child { border-radius: 8px 0 0 8px; }
+    .troubleshooting th:last-child { border-radius: 0 8px 8px 0; }
+    .troubleshooting td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #8B95A5; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="breadcrumb">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Bright_Data.svg/960px-Bright_Data.svg.png" alt="Bright Data">
+      <span class="divider">/</span>
+      <a href="index.html">Automation Library</a>
+      <span class="divider">/</span>
+      <span class="current">Job Posting Sales Signal</span>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    Back to automations
+  </a>
+
+  <section class="detail-hero">
+    <h1>New Job Posting as Outbound Sales Signal</h1>
+    <p>Turn LinkedIn job postings into HubSpot deals on autopilot. Bright Data scrapes new hiring signals daily, AI qualifies which postings indicate buying intent, drafts a cold email, and creates a deal in HubSpot with a Slack alert. Works with any CRM and any messaging tool.</p>
+  </section>
+
+  <div class="platform-tabs">
+    <button class="platform-tab active" onclick="switchTab('zapier')">
+      <img src="https://app.fullenrich.com/app/_app/immutable/assets/zapier.f1331444.svg" alt="Zapier"> Zapier
+    </button>
+    <button class="platform-tab" onclick="switchTab('make')">
+      <img src="https://app.fullenrich.com/app/_app/immutable/assets/make.d929597e.svg" alt="Make"> Make
+    </button>
+    <button class="platform-tab" onclick="switchTab('n8n')">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8b13FupbJiqRDcYQbK4BfEcAJ6S7eA8I5oQ&s" alt="n8n"> n8n
+    </button>
+  </div>
+
+  <div class="tab-content active" id="tab-zapier">
+    <div class="steps-container">
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Zapier template coming soon.</strong> Step-by-step guide in progress.
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-make">
+    <div class="steps-container">
+
+      <div class="callout">
+        <strong>What this scenario does:</strong> On a schedule, the scenario reads a saved LinkedIn jobs search URL from your storage (Airtable by default), uses <strong>Bright Data Web Unlocker</strong> to fetch the page, and asks GPT to extract every job posting as structured data. Each new job is qualified by AI for buying intent, gets a personalized cold email drafted, lands as a deal in your CRM, and a Slack alert pings your sales team.
+        <br><br>Flow: <strong>Storage (Searches)</strong> → <strong>Bright Data (Scrape LinkedIn jobs)</strong> → <strong>GPT (Parse jobs JSON)</strong> → <strong>Iterator (loop jobs)</strong> → <strong>GPT (Qualify + draft email)</strong> → <strong>CRM (Create Deal)</strong> → <strong>Slack (Alert)</strong>
+        <br><br>
+        <a href="https://www.make.com/en/integration/19071-new-job-posting-as-outbound-sales-signal-powered-by-bright-data?templatePublicId=19071" target="_blank" class="get-template-btn">
+          <img src="https://app.fullenrich.com/app/_app/immutable/assets/make.d929597e.svg" alt="Make">
+          Get Make template
+        </a>
+      </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Storage, CRM, and alerts are swappable:</strong> the template uses <strong>Airtable</strong> for storage, <strong>HubSpot</strong> for CRM, and <strong>Slack</strong> for alerts by default. Storage can be Notion, Google Sheets, or any database. CRM can be Pipedrive, Salesforce, Attio, Close. Alerts can go to Discord, Teams, Telegram, Gmail, or any messaging app.
+      </div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Activate Web Unlocker on Bright Data</div>
+          <div class="step-desc">
+            Web Unlocker fetches LinkedIn job pages reliably (handles JS rendering, bot detection, geo).
+            <ul>
+              <li>Log in at <a href="https://brightdata.com" target="_blank" style="color:#60A5FA;">brightdata.com</a></li>
+              <li>Sidebar → <strong>Proxies & Scraping Infrastructure</strong></li>
+              <li>Click <strong>Add</strong> → select <strong>Web Unlocker</strong></li>
+              <li>Click <strong>Start with Web Unlocker</strong> → name it <code>web_unlocker_agent</code></li>
+            </ul>
+            Full docs: <a href="https://docs.brightdata.com/scraping-automation/web-unlocker/introduction" target="_blank" style="color:#60A5FA;">Web Unlocker introduction</a>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Set up your Searches storage - any database works</div>
+          <div class="step-desc">
+            <strong>The storage holds your LinkedIn job search URLs</strong> (one per role/region/keyword you want to monitor). Pick what fits:
+            <ul>
+              <li><strong>Airtable</strong> - template default</li>
+              <li><strong>Notion</strong> / <strong>Google Sheets</strong> / any database (Postgres, Supabase, MongoDB)</li>
+            </ul>
+            Required fields:
+            <ul>
+              <li><strong>Label</strong> - friendly name (e.g. "AE roles in EU SaaS")</li>
+              <li><strong>LinkedIn URL</strong> - the LinkedIn jobs search URL (e.g. <code>linkedin.com/jobs/search?keywords=Account%20Executive&location=Paris&f_TPR=r86400</code> for past 24h)</li>
+              <li><strong>Active</strong> (boolean) - toggle monitoring per search</li>
+              <li><strong>Last Run</strong> (date) - filled by the scenario</li>
+              <li><strong>Last Job Count</strong> (number) - filled by the scenario</li>
+              <li><strong>Notes</strong> - optional</li>
+            </ul>
+            <strong>Pro tip:</strong> use LinkedIn's filter <code>f_TPR=r86400</code> (past 24h) so you only get fresh postings on each run. The quality of your output depends entirely on the quality of these URLs - take time to build precise searches per ICP/role/region.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Module 1 - Search Records (read active searches)</div>
+          <div class="step-desc">
+            The first module is <strong>Airtable - Search Records</strong>. It reads one active search at a time, sorted by <strong>Last Run ascending</strong> (so the oldest one runs first - good rotation when you have many searches).
+            <ul>
+              <li><strong>Filter</strong> → <code>{Active} = TRUE()</code></li>
+              <li><strong>Sort</strong> → <code>Last Run</code> ascending</li>
+              <li><strong>Limit</strong> → <code>1</code> (process one search per run)</li>
+            </ul>
+            <strong>If you swapped the storage:</strong> replace this module with the equivalent Search/List action.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Module 2 - Bright Data Web Unlocker (scrape LinkedIn jobs)</div>
+          <div class="step-desc">
+            Fetches the LinkedIn jobs search URL from the previous module. Pre-configured:
+            <ul>
+              <li><strong>Zone</strong> → <code>web_unlocker_agent</code></li>
+              <li><strong>URL</strong> → <code>{{1.LinkedIn URL}}</code></li>
+              <li><strong>Format</strong> → <code>raw</code></li>
+              <li><strong>Method</strong> → <code>GET</code></li>
+            </ul>
+            Returns the raw HTML of the LinkedIn job results page.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Module 3 - GPT (parse jobs into structured JSON)</div>
+          <div class="step-desc">
+            <strong>OpenAI GPT-5-mini</strong> reads the LinkedIn HTML and extracts every job posting as a structured JSON array.
+            <br><br>
+            For each job: <code>title</code>, <code>company</code>, <code>company_linkedin_slug</code>, <code>location</code>, <code>posted_date</code>, <code>posted_iso</code>, <code>job_url</code>, <code>early_applicant</code>, <code>actively_hiring</code>.
+            <br><br>
+            The system prompt is already configured. Limited to 30 jobs per run to stay within the model's context window.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <div class="step-title">Module 4 - Parse JSON</div>
+          <div class="step-desc">
+            <strong>JSON - Parse JSON</strong> turns GPT's text response into a real array Make can iterate over. Already pre-configured with the schema (title, company, location, etc.).
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <div class="step-title">Module 5 - Iterator (loop over each job)</div>
+          <div class="step-desc">
+            The <strong>Iterator</strong> module processes one job at a time so each gets its own qualification, email draft, deal, and alert.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+          <div class="step-title">Module 6 - GPT (qualify buying intent + draft email)</div>
+          <div class="step-desc">
+            For each job, a second <strong>OpenAI</strong> module:
+            <ul>
+              <li><strong>Scores buying intent</strong> based on the role and seniority (e.g. "Head of Marketing" hiring → likely needs marketing tools)</li>
+              <li><strong>Drafts a personalized cold email</strong> that ties the hiring signal to your value prop</li>
+            </ul>
+            Tweak the prompt with your ICP, your product, and the angle you want the email to take. Returns JSON with <code>intent_score</code>, <code>reasoning</code>, <code>email_subject</code>, <code>email_body</code>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">9</div>
+        <div class="step-content">
+          <div class="step-title">Module 7 - Filter (only qualified jobs)</div>
+          <div class="step-desc">
+            A Make <strong>filter</strong> on the next module continues only if <code>intent_score >= 7</code> (or whatever threshold you pick). This avoids creating noise in your CRM for low-signal jobs.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">10</div>
+        <div class="step-content">
+          <div class="step-title">Module 8 - Create the Deal in your CRM - any CRM works</div>
+          <div class="step-desc">
+            <strong>HubSpot - Create a Deal</strong> by default. The deal includes:
+            <ul>
+              <li><strong>Deal name</strong> → <code>{{company}} - {{title}}</code></li>
+              <li><strong>Amount</strong> → estimated (or leave blank)</li>
+              <li><strong>Stage</strong> → <code>New Lead</code> (or your initial stage)</li>
+              <li><strong>Notes</strong> → AI reasoning + drafted email body + LinkedIn job URL</li>
+            </ul>
+            <strong>Want a different CRM?</strong> Replace this module with:
+            <ul>
+              <li><strong>Pipedrive</strong> → Create a Deal</li>
+              <li><strong>Salesforce</strong> → Create an Opportunity</li>
+              <li><strong>Attio</strong> → Create a Record</li>
+              <li><strong>Close</strong> → Create a Lead</li>
+              <li><strong>Airtable / Notion</strong> → Create a Record (CRM-lite)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">11</div>
+        <div class="step-content">
+          <div class="step-title">Module 9 - Send the alert (any channel works)</div>
+          <div class="step-desc">
+            <strong>Slack - Create a Message</strong> by default. The alert summarizes the new opportunity:
+            <div class="code-block">🎯 New hiring signal: *{{company}}*
+
+🧑‍💼 Role: {{title}} ({{location}})
+📊 Intent score: {{intent_score}}/10
+🔗 LinkedIn job: {{job_url}}
+
+📨 Draft email:
+{{email_body}}</div>
+            <strong>Want a different channel?</strong> Discord, Microsoft Teams, Telegram, Gmail, Twilio SMS, or any messaging app supported by Make.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">12</div>
+        <div class="step-content">
+          <div class="step-title">Module 10 - Update Last Run on the Search</div>
+          <div class="step-desc">
+            Updates the Airtable Search record:
+            <ul>
+              <li><strong>Last Run</strong> → <code>{{now}}</code></li>
+              <li><strong>Last Job Count</strong> → number of jobs found</li>
+            </ul>
+            This way, the next scenario run picks the next search in rotation (sort by Last Run ascending).
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">13</div>
+        <div class="step-content">
+          <div class="step-title">Test and activate</div>
+          <div class="step-desc">
+            Add 1-2 LinkedIn job search URLs to your Airtable with <code>Active = TRUE</code>. Click <strong>Run once</strong>. Verify that jobs are scraped, qualified, and that one HubSpot deal + Slack alert appears for a high-intent job.
+            <br><br>
+            Set the schedule (every 1-6 hours depending on your volume) and toggle the scenario <strong>ON</strong>. The "1 search per run" pattern means each search gets its turn over time without overwhelming your CRM.
+          </div>
+        </div>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>Troubleshooting</h3>
+        <table>
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>LinkedIn returns 0 jobs</td><td>Make sure the LinkedIn URL is a valid jobs search (try opening it in incognito). Add <code>f_TPR=r86400</code> for past 24h to limit to fresh postings.</td></tr>
+            <tr><td>GPT extracts incomplete data</td><td>The model is limited to 30 jobs per run to stay within context. Use a more granular search URL (specific keyword + location) to keep results focused.</td></tr>
+            <tr><td>Too many low-quality deals in CRM</td><td>Raise the <code>intent_score</code> threshold in the filter (try 8 or 9). Or refine the qualification prompt with stricter criteria for your ICP.</td></tr>
+            <tr><td>Duplicate deals in CRM</td><td>Add a search step before Create Deal to check if a deal with the same company + role already exists. Skip if yes.</td></tr>
+            <tr><td>Cold emails feel generic</td><td>Inject more context into the GPT prompt (your product description, your ICP, sample winning emails). The more context, the more personalized the output.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-n8n">
+    <div class="steps-container">
+
+      <div class="callout">
+        <strong>What this workflow does:</strong> Every morning, the workflow reads your saved LinkedIn job search URLs from Airtable, uses <strong>Bright Data Web Unlocker</strong> to scrape each one, asks GPT to extract every job posting as structured data, then a second GPT call scores each job as a HIGH / MEDIUM / LOW buying signal and drafts a personalized outreach email. HIGH and MEDIUM signals create a HubSpot deal and ping Slack with the full context.
+        <br><br>10 nodes: <strong>Schedule</strong> → <strong>Airtable Search</strong> → <strong>Loop</strong> → <strong>Bright Data</strong> → <strong>GPT (extract jobs)</strong> → <strong>Code (parse JSON)</strong> → <strong>GPT (score + email)</strong> → <strong>IF (filter)</strong> → <strong>HubSpot</strong> → <strong>Slack</strong>
+        <br><br>
+        <a href="YOUR_N8N_TEMPLATE_URL" target="_blank" class="get-template-btn">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8b13FupbJiqRDcYQbK4BfEcAJ6S7eA8I5oQ&s" alt="n8n">
+          Get n8n template
+        </a>
+      </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Storage, CRM, and alerts are swappable:</strong> the template uses <strong>Airtable</strong> for storage, <strong>HubSpot</strong> for CRM, and <strong>Slack</strong> for alerts by default. Storage can be Notion, Google Sheets, Postgres, MySQL, MongoDB, Supabase. CRM can be Salesforce, Pipedrive, Attio, Close. Alerts can go to Discord, Teams, Telegram, Gmail, SMS, or any messaging app.
+      </div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Activate Web Unlocker on Bright Data</div>
+          <div class="step-desc">
+            Web Unlocker fetches LinkedIn job pages reliably (handles JS, bot detection, geo).
+            <ul>
+              <li>Log in at <a href="https://brightdata.com" target="_blank" style="color:#60A5FA;">brightdata.com</a></li>
+              <li>Sidebar → <strong>Proxies & Scraping Infrastructure</strong></li>
+              <li>Click <strong>Add</strong> → select <strong>Web Unlocker</strong></li>
+              <li>Click <strong>Start with Web Unlocker</strong> → name it <code>n8n_unlocker</code></li>
+            </ul>
+            Full docs: <a href="https://docs.brightdata.com/scraping-automation/web-unlocker/introduction" target="_blank" style="color:#60A5FA;">Web Unlocker introduction</a>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Set up your Searches storage - any database works</div>
+          <div class="step-desc">
+            <strong>The storage holds your LinkedIn job search URLs</strong> (one per role/region/keyword you want to monitor). Pick what fits:
+            <ul>
+              <li><strong>Airtable</strong> - template default</li>
+              <li><strong>Notion</strong> / <strong>Google Sheets</strong> / any database (Postgres, Supabase, MongoDB)</li>
+            </ul>
+            Required fields:
+            <ul>
+              <li><strong>Label</strong> - friendly name (e.g. "AE roles in EU SaaS")</li>
+              <li><strong>LinkedIn URL</strong> - the LinkedIn jobs search URL (e.g. <code>linkedin.com/jobs/search?keywords=Account%20Executive&location=Paris&f_TPR=r86400</code> for past 24h)</li>
+              <li><strong>Active</strong> (boolean) - toggle monitoring per search</li>
+              <li><strong>Last Run</strong> (date) - filled by the workflow</li>
+            </ul>
+            <strong>Pro tip:</strong> use LinkedIn's filter <code>f_TPR=r86400</code> (past 24h) so you only get fresh postings on each run. The quality of your output depends entirely on the quality of these URLs - take time to build precise searches per ICP/role/region.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Node 1 - Schedule Trigger (any trigger works)</div>
+          <div class="step-desc">
+            By default the template fires daily at <strong>9am</strong>. Adjust the interval and time in the Schedule Trigger node.
+            <br><br>
+            <strong>Want a different trigger?</strong> Replace with:
+            <ul>
+              <li><strong>Webhook</strong> - manual or external trigger</li>
+              <li><strong>Cron</strong> - more granular schedules (multiple times a day)</li>
+              <li><strong>Form Trigger</strong> - on-demand checks</li>
+              <li><strong>Chat Trigger</strong> - ask the agent to run a search</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Node 2 - Get Active Searches</div>
+          <div class="step-desc">
+            The <strong>Airtable - Search</strong> node fetches all rows where <code>Active = TRUE()</code> from your <code>Searches</code> table, sorted by <strong>Last Run ascending</strong> so the oldest searches refresh first (good rotation if you have many).
+            <br><br>
+            Connect your Airtable account and point to your base + table. <strong>If you swapped the storage</strong> (Notion / Sheets / DB): replace this node with the equivalent Search/List action.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Node 3 - Loop Over Searches (Split In Batches)</div>
+          <div class="step-desc">
+            Processes one search at a time so each gets its own scrape, AI analysis, and CRM/Slack output. If one search fails (rate limit, timeout), the others still get processed.
+            <br><br>
+            No setup needed - the node just iterates through the records returned by the previous node.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <div class="step-title">Node 4 - Scrape LinkedIn with Bright Data</div>
+          <div class="step-desc">
+            The <strong>Bright Data Web Unlocker</strong> node fetches the current LinkedIn jobs search page. Pre-configured:
+            <ul>
+              <li><strong>Zone</strong> → <code>n8n_unlocker</code></li>
+              <li><strong>URL</strong> → <code>{{ $json.fields["LinkedIn URL"] }}</code> from the loop</li>
+              <li><strong>Country</strong> → <code>us</code> (change if needed)</li>
+              <li><strong>Data format</strong> → <code>markdown</code> (clean output for the LLM)</li>
+            </ul>
+            Connect your Bright Data credentials. Web Unlocker handles JS rendering, CAPTCHAs, and bot detection automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <div class="step-title">Node 5 - Extract Jobs (AI)</div>
+          <div class="step-desc">
+            <strong>OpenAI GPT-5.4-mini</strong> reads the LinkedIn markdown and extracts every job posting as a structured JSON array.
+            <br><br>
+            For each job: <code>title</code>, <code>company</code>, <code>company_linkedin_slug</code>, <code>location</code>, <code>posted_date</code>, <code>posted_iso</code>, <code>job_url</code>, <code>early_applicant</code>, <code>actively_hiring</code>.
+            <br><br>
+            The system prompt is already configured. Limited to 30 jobs per run. <strong>Want a different LLM?</strong> Swap for Claude, Gemini, Mistral, Groq, or any supported model.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+          <div class="step-title">Node 6 - Parse JSON Output (Code node)</div>
+          <div class="step-desc">
+            A small <strong>Code node</strong> parses the GPT response into a real array. It also handles edge cases: strips markdown code fences if the model wraps the JSON, and recovers as much as possible if the output is truncated mid-job.
+            <br><br>
+            No setup needed - just keep the node as-is unless you want to customize the recovery logic.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">9</div>
+        <div class="step-content">
+          <div class="step-title">Node 7 - Score Signal & Draft Email (AI)</div>
+          <div class="step-desc">
+            <strong>OpenAI GPT-4o-mini</strong> with a strict JSON schema scores each job as a buying signal:
+            <ul>
+              <li><strong>HIGH</strong> - Senior leadership hire, multiple roles open, net-new sales hire at B2B SaaS</li>
+              <li><strong>MEDIUM</strong> - Mid-level B2B sales/eng/marketing roles at growing companies</li>
+              <li><strong>LOW</strong> - Junior IC roles, sports teams, retail/hospitality, agency staffing</li>
+            </ul>
+            For HIGH and MEDIUM, GPT also drafts a 3-4 sentence personalized cold email that ties the hiring signal to your value prop. Returns <code>signal_strength</code>, <code>rationale</code>, <code>outreach_email</code>.
+            <br><br>
+            <strong>Tweak the prompt with your ICP, your product, and your tone</strong> - the more context, the more personalized the email.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">10</div>
+        <div class="step-content">
+          <div class="step-title">Node 8 - HIGH or MEDIUM Signal? (smart filter)</div>
+          <div class="step-desc">
+            The <strong>IF node</strong> only continues if <code>signal_strength = HIGH</code> OR <code>signal_strength = MEDIUM</code>. LOW signals are skipped (no CRM noise, no Slack spam).
+            <br><br>
+            Already pre-configured. Adjust the threshold if you want only HIGH signals to go through.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">11</div>
+        <div class="step-content">
+          <div class="step-title">Node 9 - Create the Deal in your CRM - any CRM works</div>
+          <div class="step-desc">
+            <strong>HubSpot - Create Deal</strong> by default. The deal includes:
+            <ul>
+              <li><strong>Deal name</strong> → <code>Hiring signal — {{company}} hiring {{title}}</code></li>
+              <li><strong>Stage</strong> → <code>appointmentscheduled</code> (adjust to your pipeline)</li>
+              <li><strong>Description</strong> → AI rationale + drafted email + job details</li>
+            </ul>
+            <strong>Want a different CRM?</strong> Replace this node with:
+            <ul>
+              <li><strong>Salesforce</strong> → Create an Opportunity</li>
+              <li><strong>Pipedrive</strong> → Create a Deal</li>
+              <li><strong>Attio</strong> → Create a Record</li>
+              <li><strong>Close</strong> → Create a Lead</li>
+              <li><strong>Airtable / Notion</strong> → Create a Record (CRM-lite)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">12</div>
+        <div class="step-content">
+          <div class="step-title">Node 10 - Send the alert (any channel works)</div>
+          <div class="step-desc">
+            <strong>Slack - Send Message</strong> by default. The alert summarizes the new opportunity:
+            <div class="code-block">🎯 New buying signal
+
+📋 {{ title }} at {{ company }}
+📍 {{ location }}
+🔥 Signal: {{ signal_strength }}
+
+💡 Why this matters:
+{{ rationale }}
+
+📧 Suggested outreach:
+{{ outreach_email }}
+
+🔗 View job posting
+💼 HubSpot deal ID: {{ dealId }}</div>
+            <strong>Want a different channel?</strong> Replace with:
+            <ul>
+              <li><strong>Discord / Microsoft Teams / Telegram</strong> → Send Message</li>
+              <li><strong>Gmail / Outlook / SMTP</strong> → Send Email</li>
+              <li><strong>Twilio</strong> → SMS or WhatsApp</li>
+              <li><strong>Webhook</strong> → push to your own system</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">13</div>
+        <div class="step-content">
+          <div class="step-title">Test and activate</div>
+          <div class="step-desc">
+            Add 1-2 LinkedIn job search URLs to your Airtable with <code>Active = TRUE</code>. Click <strong>Test workflow</strong>. Verify that jobs are scraped, scored, and that one HubSpot deal + Slack alert appears for a HIGH or MEDIUM signal.
+            <br><br>
+            Set the schedule (default: daily at 9am) and toggle the workflow to <strong>Active</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>Troubleshooting</h3>
+        <table>
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>Web Unlocker 403 / timeout</td><td>Make sure your Web Unlocker zone is created and active. Try a different country in the Bright Data node if LinkedIn blocks the geo.</td></tr>
+            <tr><td>GPT returns truncated JSON</td><td>The Parse JSON Output Code node already handles truncation. If you still see issues, lower the job count limit in the Extract Jobs prompt (try 20 instead of 30).</td></tr>
+            <tr><td>Too many low-quality deals in CRM</td><td>Tighten the IF filter to only allow HIGH signals. Or refine the scoring prompt with stricter criteria for your ICP.</td></tr>
+            <tr><td>Duplicate deals in HubSpot</td><td>Add a HubSpot Search node before Create Deal to check if a deal with the same company + role already exists. Skip if yes.</td></tr>
+            <tr><td>Cold emails feel generic</td><td>Add your product description, ICP, and 1-2 winning email examples to the Score Signal prompt. The more context, the better the output.</td></tr>
+            <tr><td>Loop fails on one search</td><td>By design, Split In Batches continues even if one item fails. Check the execution log to see which URL errored.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function switchTab(platform) {
+      document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById('tab-' + platform).classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

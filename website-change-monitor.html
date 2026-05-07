@@ -61,6 +61,24 @@
     .tab-content.active { display: block; }
     .steps-container { max-width: 800px; margin: 0 auto; padding: 40px 40px 80px; }
 
+    .step { display: flex; gap: 20px; margin-bottom: 40px; }
+    .step-number {
+      flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(59,130,246,0.12); color: #3B82F6;
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-content { flex: 1; }
+    .step-title { font-size: 17px; font-weight: 700; color: #FFFFFF; margin-bottom: 8px; }
+    .step-desc { font-size: 15px; color: #8B95A5; line-height: 1.7; }
+    .step-desc code {
+      background: rgba(59,130,246,0.12); padding: 2px 7px; border-radius: 5px;
+      font-size: 13px; color: #93C5FD;
+    }
+    .step-desc ul { margin-top: 8px; padding-left: 20px; }
+    .step-desc li { margin-bottom: 4px; }
+    .step-desc strong { color: #E2E8F0; font-weight: 600; }
+
     .callout {
       background: rgba(59,130,246,0.08);
       border-left: 3px solid #3B82F6;
@@ -69,6 +87,42 @@
       font-size: 14px; color: #93C5FD; line-height: 1.7;
     }
     .callout strong { font-weight: 700; color: #FFFFFF; }
+    .get-template-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 8px; padding: 10px 22px;
+      background: #3B82F6; color: #fff;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      border: none; border-radius: 9999px; cursor: pointer;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .get-template-btn:hover { background: #2563EB; }
+    .get-template-btn img { height: 18px; }
+
+    .code-block {
+      background: #0A0E1A;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 12px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      color: #93C5FD;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .troubleshooting { margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .troubleshooting h3 { font-size: 18px; font-weight: 700; color: #FFFFFF; margin-bottom: 16px; }
+    .troubleshooting table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .troubleshooting th {
+      text-align: left; padding: 10px 14px;
+      background: rgba(59,130,246,0.08); font-weight: 600; color: #FFFFFF;
+    }
+    .troubleshooting th:first-child { border-radius: 8px 0 0 8px; }
+    .troubleshooting th:last-child { border-radius: 0 8px 8px 0; }
+    .troubleshooting td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #8B95A5; }
   </style>
 </head>
 <body>
@@ -115,17 +169,427 @@
 
   <div class="tab-content" id="tab-make">
     <div class="steps-container">
-      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
-        <strong>Make template coming soon.</strong> Step-by-step guide in progress.
+
+      <div class="callout">
+        <strong>What this scenario does:</strong> On a schedule, the scenario reads all active URLs from your storage (Airtable by default), uses <strong>Bright Data Web Unlocker</strong> to fetch the current HTML of each one (handles JS-rendered pages, CAPTCHAs, anti-bot), compares it against the previous snapshot, and uses Claude to detect <strong>real visible changes</strong> (filtering out structural noise like timestamps, build IDs, CSS). When something genuinely changed, it updates the snapshot and fires a Slack alert with a 2-3 sentence summary.
+        <br><br>5 modules: <strong>Airtable (Search Records)</strong> → <strong>Bright Data (Web Unlocker)</strong> → <strong>Claude (Compare HTML)</strong> → <strong>Airtable (Update Record)</strong> → <strong>Slack (Send Alert)</strong>
+        <br><br>
+        <a href="https://www.make.com/en/integration/19067-website-change-monitor-and-alert?templatePublicId=19067" target="_blank" class="get-template-btn">
+          <img src="https://app.fullenrich.com/app/_app/immutable/assets/make.d929597e.svg" alt="Make">
+          Get Make template
+        </a>
       </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Storage and alerts are swappable:</strong> the template uses <strong>Airtable</strong> for storage and <strong>Slack</strong> for alerts by default, but both are easy to replace. Storage can be Notion, Google Sheets, Postgres, MySQL, MongoDB, Supabase, or any database. Alerts can go to Discord, Teams, Telegram, Gmail, SMS, or any messaging app.
+      </div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Activate Web Unlocker on Bright Data</div>
+          <div class="step-desc">
+            <strong>This is the killer feature for this template</strong> - Web Unlocker handles JavaScript-rendered pages, CAPTCHAs, and bot detection that other monitoring tools (Visualping, Distill, Wachete) miss.
+            <br><br>
+            <ul>
+              <li>Log in at <a href="https://brightdata.com" target="_blank" style="color:#60A5FA;">brightdata.com</a></li>
+              <li>Sidebar → <strong>Proxies & Scraping Infrastructure</strong></li>
+              <li>Click <strong>Add</strong> → select <strong>Web Unlocker</strong></li>
+              <li>Click <strong>Start with Web Unlocker</strong> or <em>Create zone</em></li>
+              <li>Name it <code>web_unlocker_agent</code> (or any name) and save</li>
+            </ul>
+            Full docs: <a href="https://docs.brightdata.com/scraping-automation/web-unlocker/introduction" target="_blank" style="color:#60A5FA;">Web Unlocker introduction</a>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Set up your storage - any database works</div>
+          <div class="step-desc">
+            <strong>The storage holds the URLs to monitor and the previous HTML snapshot of each.</strong> Pick whatever your team uses:
+            <ul>
+              <li><strong>Airtable</strong> - template default, easiest UI to manage URLs</li>
+              <li><strong>Notion</strong> - database with the same fields</li>
+              <li><strong>Google Sheets</strong> - same fields as columns</li>
+              <li><strong>Postgres / MySQL / MongoDB / Supabase</strong> - any database via Make's native modules</li>
+            </ul>
+            Whatever you pick, the storage needs these fields:
+            <ul>
+              <li><strong>URL</strong> (text) - the page to monitor</li>
+              <li><strong>Label</strong> (text) - human-friendly name (e.g. "Stripe Pricing Page")</li>
+              <li><strong>Last HTML</strong> (long text) - previous snapshot (filled by the scenario)</li>
+              <li><strong>Last Checked At</strong> (date) - timestamp (filled by the scenario)</li>
+              <li><strong>Last Change Summary</strong> (long text) - last AI summary (filled by the scenario)</li>
+              <li><strong>Active</strong> (checkbox) - toggle to enable/disable monitoring per URL</li>
+            </ul>
+            The template ships with <strong>Airtable</strong>. If you swap it, replace the Airtable modules in steps 3 and 6 with the equivalent Read/Update modules from your storage.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Module 1 - Airtable Search Records (read all active URLs)</div>
+          <div class="step-desc">
+            The first module is <strong>Airtable - Search Records</strong>. It reads all active URLs from your <code>URLs</code> table.
+            <br><br>
+            Pre-configured filter: <code>{Active} = TRUE()</code> with <strong>Limit</strong> = 100. Connect your Airtable account, point to your base + table.
+            <br><br>
+            <strong>Schedule:</strong> set the run frequency in Make's scenario settings (recommended: every 1-6 hours depending on your needs).
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Module 2 - Bright Data Web Unlocker (fetch current HTML)</div>
+          <div class="step-desc">
+            For each URL from the trigger, this module fetches the current page content via Web Unlocker. Pre-configured:
+            <ul>
+              <li><strong>Zone</strong> → <code>web_unlocker_agent</code></li>
+              <li><strong>URL</strong> → <code>{{1.URL}}</code> from Airtable</li>
+              <li><strong>Format</strong> → <code>raw</code></li>
+              <li><strong>Method</strong> → <code>GET</code></li>
+            </ul>
+            Connect your Bright Data account. Web Unlocker handles JS rendering, CAPTCHAs, bot detection automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Module 3 - Claude (smart change detection)</div>
+          <div class="step-desc">
+            <strong>This is what makes the template smart.</strong> Most monitoring tools just compare hashes - they alert you for every meaningless change (timestamps, build IDs, dynamic CSS).
+            <br><br>
+            This module uses <strong>Claude Sonnet 4.6</strong> to compare the previous HTML vs the current HTML and only flag <strong>real visible changes</strong>: pricing changes, new/removed features, copy updates, button labels, new sections.
+            <br><br>
+            <strong>Filter on this module:</strong> only runs if <code>{{2.result}} != {{1.Last HTML}}</code> (avoids running Claude when nothing changed at all).
+            <br><br>
+            The prompt instructs Claude to return:
+            <ul>
+              <li><code>FIRST_RUN</code> if there's no previous snapshot</li>
+              <li><code>NO_REAL_CHANGE</code> if only structural noise changed</li>
+              <li>A 2-3 sentence summary if there's a real change</li>
+            </ul>
+            These special tokens are used by the alert filter in step 7.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <div class="step-title">Module 4 - Update the storage (write new snapshot)</div>
+          <div class="step-desc">
+            Updates the Airtable record with:
+            <ul>
+              <li><strong>Last HTML</strong> → the new HTML (truncated to 99000 chars to fit Airtable's limit)</li>
+              <li><strong>Last Change Summary</strong> → Claude's response</li>
+              <li><strong>Last Checked At</strong> → <code>{{now}}</code></li>
+            </ul>
+            <strong>If you swapped the storage</strong> (Notion / Sheets / DB): replace this module with the equivalent Update / Upsert action and map the same three fields.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <div class="step-title">Module 5 - Send the alert (any channel works)</div>
+          <div class="step-desc">
+            <strong>The alert can go anywhere your team listens.</strong> Pick whatever fits:
+            <ul>
+              <li><strong>Slack</strong> - template default, mrkdwn formatting</li>
+              <li><strong>Discord</strong> / <strong>Microsoft Teams</strong> / <strong>Telegram</strong> - Send Message</li>
+              <li><strong>Gmail / Outlook / SMTP</strong> - email the alert</li>
+              <li><strong>Twilio</strong> - SMS or WhatsApp</li>
+              <li><strong>PagerDuty</strong> - for critical pages</li>
+              <li><strong>Linear / Jira</strong> - turn changes into tickets</li>
+            </ul>
+            The template ships with <strong>Slack</strong> using this format:
+            <div class="code-block">🔔 Website change detected: *{{Label}}*
+
+🔗 {{URL}}
+
+📝 What changed:
+{{Claude summary}}
+
+⏰ Detected: {{now}}</div>
+            <strong>The smart filter on this module is the key:</strong> it only fires if Claude's summary is NOT <code>FIRST_RUN</code> and NOT <code>NO_REAL_CHANGE</code>. So you only get alerts for actual visible changes - no noise from timestamps, build IDs, or dynamic CSS.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+          <div class="step-title">Test and activate</div>
+          <div class="step-desc">
+            Add a few URLs to your Airtable with <code>Active = true</code>. Click <strong>Run once</strong> in Make. The first run for each URL will save the initial snapshot (Claude returns <code>FIRST_RUN</code>, no Slack alert). On subsequent runs, real changes trigger Slack alerts.
+            <br><br>
+            Set the schedule in Make (every hour, 6 hours, daily) and toggle the scenario <strong>ON</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>Troubleshooting</h3>
+        <table>
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>Web Unlocker 403 / timeout</td><td>Make sure your Web Unlocker zone is created and active. For sites with heavy JS, use a zone with rendering enabled.</td></tr>
+            <tr><td>Too many false alerts</td><td>The AI filter should remove most noise. If you still get noise, tighten the prompt: "Ignore: navigation menus, footer links, social icons."</td></tr>
+            <tr><td>Missing real changes</td><td>Switch Claude model to Opus 4.7 for sharper detection. Or pre-strip HTML to extract just the main content (use a Text Parser before Claude).</td></tr>
+            <tr><td>Airtable HTML field too long</td><td>The template already truncates to 99000 chars. For larger pages, use a long-text field in Notion or store as a file in S3 / Google Drive instead.</td></tr>
+            <tr><td>Want to monitor specific sections only</td><td>Add a Text Parser module after Web Unlocker to extract the relevant section by CSS selector (e.g. <code>div.pricing-table</code>) before sending to Claude.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 
   <div class="tab-content" id="tab-n8n">
     <div class="steps-container">
-      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
-        <strong>n8n template coming soon.</strong> Step-by-step guide in progress.
+
+      <div class="callout">
+        <strong>What this workflow does:</strong> On a schedule, n8n reads all active URLs from your storage (Airtable by default), loops through each one, uses <strong>Bright Data Web Unlocker</strong> to fetch the current HTML (handles JS, CAPTCHAs, anti-bot, geo-blocks), truncates it to fit the LLM context, and uses Claude Sonnet 4.6 to detect <strong>real visible changes</strong>. The new snapshot is saved back to your CRM. If a real change is detected (not FIRST_RUN or NO_CHANGE), Slack gets alerted with a 2-3 sentence summary.
+        <br><br>9 nodes: <strong>Schedule</strong> → <strong>CRM Search</strong> → <strong>Loop</strong> → <strong>Bright Data</strong> → <strong>Truncate HTML</strong> → <strong>Claude (Diff Analyzer)</strong> → <strong>CRM Update</strong> → <strong>IF (Change Detected?)</strong> → <strong>Slack</strong>
+        <br><br>
+        <a href="YOUR_N8N_TEMPLATE_URL" target="_blank" class="get-template-btn">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8b13FupbJiqRDcYQbK4BfEcAJ6S7eA8I5oQ&s" alt="n8n">
+          Get n8n template
+        </a>
       </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Storage and alerts are swappable:</strong> the template uses <strong>Airtable</strong> for storage and <strong>Slack</strong> for alerts by default. Storage can be Notion, Google Sheets, HubSpot, Salesforce, Pipedrive, Postgres, MySQL, MongoDB, Supabase, or any database. Alerts can go to Discord, Teams, Telegram, Gmail, SMS, or any messaging app supported by n8n.
+      </div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Activate Web Unlocker on Bright Data</div>
+          <div class="step-desc">
+            <strong>This is the killer feature</strong> - Web Unlocker handles JavaScript-rendered pages, CAPTCHAs, and bot detection that other monitoring tools (Visualping, Distill, Wachete) miss.
+            <ul>
+              <li>Log in at <a href="https://brightdata.com" target="_blank" style="color:#60A5FA;">brightdata.com</a></li>
+              <li>Sidebar → <strong>Proxies & Scraping Infrastructure</strong></li>
+              <li>Click <strong>Add</strong> → select <strong>Web Unlocker</strong></li>
+              <li>Click <strong>Start with Web Unlocker</strong> or <em>Create zone</em></li>
+              <li>Name it <code>n8n_unlocker</code> (or any name) and save</li>
+            </ul>
+            Full docs: <a href="https://docs.brightdata.com/scraping-automation/web-unlocker/introduction" target="_blank" style="color:#60A5FA;">Web Unlocker introduction</a>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Set up your storage - any database works</div>
+          <div class="step-desc">
+            <strong>The storage holds the URLs to monitor and the previous HTML snapshot of each.</strong> Pick whatever your team uses:
+            <ul>
+              <li><strong>Airtable</strong> - template default, easiest UI</li>
+              <li><strong>Notion</strong> - database with the same fields</li>
+              <li><strong>Google Sheets</strong> - same fields as columns</li>
+              <li><strong>HubSpot / Salesforce / Pipedrive / Attio</strong> - any CRM</li>
+              <li><strong>Postgres / MySQL / MongoDB / Supabase</strong> - any database</li>
+            </ul>
+            Required fields:
+            <ul>
+              <li><strong>URL</strong> (text) - the page to monitor</li>
+              <li><strong>Label</strong> (text) - friendly name (e.g. "Stripe Pricing")</li>
+              <li><strong>Active</strong> (boolean) - toggle monitoring per URL</li>
+              <li><strong>Last HTML</strong> (long text) - filled by the workflow</li>
+              <li><strong>Last Change Summary</strong> (long text) - filled by the workflow</li>
+              <li><strong>Last Checked At</strong> (date) - filled by the workflow</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Node 1 - Schedule Trigger (any trigger works)</div>
+          <div class="step-desc">
+            By default the template uses a <strong>Schedule Trigger</strong> that fires on your interval (e.g. every hour, every day). Click the node and set the interval.
+            <br><br>
+            <strong>Want a different trigger?</strong> Replace with:
+            <ul>
+              <li><strong>Webhook</strong> - manual or external trigger</li>
+              <li><strong>Cron Trigger</strong> - advanced scheduling expressions</li>
+              <li><strong>Form Trigger</strong> - on-demand checks</li>
+              <li><strong>Chat Trigger</strong> - check a URL by asking the agent</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Node 2 - Get URLs to Monitor</div>
+          <div class="step-desc">
+            The <strong>Airtable - Search</strong> node fetches all rows where <code>Active = TRUE()</code> from your <code>URLs</code> table.
+            <br><br>
+            Click the node, connect your Airtable account, and point to your base + table. The filter formula is pre-set: <code>{Active} = TRUE()</code>.
+            <br><br>
+            <strong>If you swapped the storage</strong> (Notion/Sheets/CRM/DB): replace this node with the equivalent Search/List node. Make sure it returns the URL field for each record.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Node 3 - Loop Over URLs (Split In Batches)</div>
+          <div class="step-desc">
+            The <strong>Loop Over URLs</strong> node processes one URL at a time. This keeps the workflow clean and resilient - if one URL fails (timeout, 404), the others still get processed.
+            <br><br>
+            No setup needed. The node just iterates through the records returned by the previous node.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <div class="step-title">Node 4 - Scrape Page with Bright Data</div>
+          <div class="step-desc">
+            The <strong>Bright Data Web Unlocker</strong> node fetches the current page content. Pre-configured:
+            <ul>
+              <li><strong>Zone</strong> → <code>n8n_unlocker</code> (or whatever you named your zone in step 1)</li>
+              <li><strong>URL</strong> → <code>{{ $json.fields.URL }}</code> from the loop</li>
+              <li><strong>Country</strong> → <code>us</code> (change if you need a different geo)</li>
+            </ul>
+            Connect your Bright Data credentials. Web Unlocker handles JS rendering, CAPTCHAs, and bot detection automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <div class="step-title">Node 5 - Truncate HTML</div>
+          <div class="step-desc">
+            A small <strong>Code node</strong> keeps only the first <strong>90,000 characters</strong> of the HTML to fit Claude's context window.
+            <br><br>
+            No setup needed unless you want to adjust the limit (you can increase it for larger pages or models with bigger context windows).
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+          <div class="step-title">Node 6 - AI Diff Analyzer (smart change detection)</div>
+          <div class="step-desc">
+            <strong>This is what makes the workflow smart.</strong> Most monitoring tools just compare hashes - they alert for every meaningless change (timestamps, build IDs, dynamic CSS).
+            <br><br>
+            The <strong>Anthropic Claude Sonnet 4.6</strong> node compares the previous HTML vs the current HTML and returns:
+            <ul>
+              <li><code>FIRST_RUN</code> if there's no previous snapshot</li>
+              <li><code>NO_CHANGE</code> if only structural noise changed</li>
+              <li>A 2-3 sentence summary if there's a real visible change</li>
+            </ul>
+            Connect your Anthropic credentials. The prompt is already set. <strong>Want a different LLM?</strong> Swap for OpenAI GPT-5, Gemini, Mistral, Groq, or Ollama (local).
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">9</div>
+        <div class="step-content">
+          <div class="step-title">Node 7 - Save Snapshot to CRM</div>
+          <div class="step-desc">
+            Updates the storage record with:
+            <ul>
+              <li><strong>Last HTML</strong> → the new truncated HTML</li>
+              <li><strong>Last Change Summary</strong> → Claude's response</li>
+              <li><strong>Last Checked At</strong> → <code>{{ $now.toISO() }}</code></li>
+            </ul>
+            <strong>If you swapped the storage:</strong> replace this node with the equivalent Update / Upsert action and map the same three fields.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">10</div>
+        <div class="step-content">
+          <div class="step-title">Node 8 - Change Detected? (smart filter)</div>
+          <div class="step-desc">
+            The <strong>IF node</strong> only fires the alert if Claude's summary does NOT contain <code>FIRST_RUN</code> AND does NOT contain <code>NO_CHANGE</code>.
+            <br><br>
+            Result: you only get notified for real, visible changes. No noise from timestamps or dynamic content. Already pre-configured.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">11</div>
+        <div class="step-content">
+          <div class="step-title">Node 9 - Send the alert (any channel works)</div>
+          <div class="step-desc">
+            <strong>The alert can go anywhere your team listens.</strong> Pick whatever fits:
+            <ul>
+              <li><strong>Slack</strong> - template default</li>
+              <li><strong>Discord / Microsoft Teams / Telegram</strong> - Send Message</li>
+              <li><strong>Gmail / Outlook / SMTP</strong> - email the alert</li>
+              <li><strong>Twilio</strong> - SMS or WhatsApp</li>
+              <li><strong>PagerDuty</strong> - for critical pages</li>
+              <li><strong>Linear / Jira</strong> - turn changes into tickets</li>
+              <li><strong>Notion / Google Docs</strong> - log changes to a doc</li>
+              <li><strong>Webhook</strong> - push to your own system</li>
+            </ul>
+            The template ships with <strong>Slack</strong> using this format:
+            <div class="code-block">🔔 Website change detected: {{ Label }}
+
+🔗 {{ URL }}
+
+📝 What changed:
+{{ Last Change Summary }}
+
+⏰ Detected: {{ $now }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">12</div>
+        <div class="step-content">
+          <div class="step-title">Test and activate</div>
+          <div class="step-desc">
+            Add 2-3 URLs to your storage with <code>Active = TRUE</code>. Click <strong>Test workflow</strong>. The first run for each URL will save the initial snapshot (Claude returns <code>FIRST_RUN</code>, no Slack alert). On subsequent runs, real changes trigger Slack alerts.
+            <br><br>
+            Set the schedule (every hour, 6 hours, daily) and toggle the workflow to <strong>Active</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>Troubleshooting</h3>
+        <table>
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>Web Unlocker 403 / timeout</td><td>Make sure your Web Unlocker zone is created and active. For sites with heavy JS, use a zone with rendering enabled.</td></tr>
+            <tr><td>HTML too long for Claude</td><td>The Truncate HTML node already cuts to 90,000 chars. For very large pages, lower the limit or extract a specific section first.</td></tr>
+            <tr><td>Too many false alerts</td><td>The AI filter removes most noise. If you still get noise, tighten the prompt: "Ignore: navigation menus, footer links, social icons, ads."</td></tr>
+            <tr><td>Missing real changes</td><td>Switch to Claude Opus 4.7 for sharper detection. Or pre-strip HTML to extract just the main content (use Cheerio in a Code node).</td></tr>
+            <tr><td>Loop fails on one URL</td><td>By design, Split In Batches continues even if one item fails. Check the execution log to see which URL errored.</td></tr>
+            <tr><td>Want to monitor only specific sections</td><td>Add a Code node after Web Unlocker to extract the relevant section by CSS selector before passing to the AI.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 
