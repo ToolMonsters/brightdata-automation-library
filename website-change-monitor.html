@@ -362,7 +362,7 @@
         <strong>What this workflow does:</strong> On a schedule, n8n reads all active URLs from your storage (Airtable by default), loops through each one, uses <strong>Bright Data Web Unlocker</strong> to fetch the current HTML (handles JS, CAPTCHAs, anti-bot, geo-blocks), truncates it to fit the LLM context, and uses Claude Sonnet 4.6 to detect <strong>real visible changes</strong>. The new snapshot is saved back to your CRM. If a real change is detected (not FIRST_RUN or NO_CHANGE), Slack gets alerted with a 2-3 sentence summary.
         <br><br>9 nodes: <strong>Schedule</strong> → <strong>CRM Search</strong> → <strong>Loop</strong> → <strong>Bright Data</strong> → <strong>Truncate HTML</strong> → <strong>Claude (Diff Analyzer)</strong> → <strong>CRM Update</strong> → <strong>IF (Change Detected?)</strong> → <strong>Slack</strong>
         <br><br>
-        <a href="YOUR_N8N_TEMPLATE_URL" target="_blank" class="get-template-btn">
+        <a href="https://n8n.io/workflows/15483-monitor-website-changes-with-bright-data-claude-airtable-and-slack/" target="_blank" class="get-template-btn">
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8b13FupbJiqRDcYQbK4BfEcAJ6S7eA8I5oQ&s" alt="n8n">
           Get n8n template
         </a>
