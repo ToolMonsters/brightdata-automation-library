@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask 3 AIs at Once - Bright Data Skill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scrollbar-gutter: stable; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #000000;
+      color: #E5E7EB;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topbar { padding: 18px 32px; display: flex; align-items: center; gap: 20px; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; }
+    .top-nav { display: flex; align-items: center; gap: 4px; margin-left: 24px; }
+    .top-nav a {
+      padding: 6px 14px; border-radius: 8px;
+      font-size: 14px; font-weight: 500;
+      color: #8B95A5; text-decoration: none; transition: all 0.2s;
+    }
+    .top-nav a:hover { color: #fff; background: rgba(255,255,255,0.04); }
+    .top-nav a.active { color: #3B82F6; background: rgba(59,130,246,0.1); }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin: 32px 40px 0; font-size: 14px; font-weight: 500;
+      color: #8B95A5; text-decoration: none; transition: color 0.2s;
+    }
+    .back-link:hover { color: #60A5FA; }
+    .back-link svg { width: 16px; height: 16px; }
+
+    .detail-hero {
+      max-width: 800px;
+      margin: 24px auto 0;
+      padding: 0 40px;
+    }
+    .detail-hero h1 {
+      font-size: 36px; font-weight: 700; color: #FFFFFF;
+      letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .detail-hero p { font-size: 16px; color: #8B95A5; max-width: 640px; }
+
+    .compat-bar {
+      max-width: 800px;
+      margin: 28px auto 0;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .compat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #5C6B82;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .compat-logos { display: flex; align-items: center; gap: 14px; }
+    .compat-logos img { height: 22px; }
+    .compat-logos img[alt="OpenAI"] { filter: brightness(0) invert(1); opacity: 0.9; }
+
+    .download-row {
+      max-width: 800px;
+      margin: 24px auto 0;
+      padding: 0 40px;
+    }
+    .download-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px;
+      background: #3B82F6;
+      color: #fff;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      border: none; border-radius: 9999px;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .download-btn:hover { background: #2563EB; }
+    .download-btn svg { width: 16px; height: 16px; }
+
+    .content {
+      max-width: 800px;
+      margin: 48px auto 0;
+      padding: 0 40px 80px;
+    }
+    .content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-top: 40px;
+      margin-bottom: 16px;
+    }
+    .content h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-top: 24px;
+      margin-bottom: 10px;
+    }
+    .content p {
+      font-size: 15px;
+      color: #C8D6E5;
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+    .content ul {
+      padding-left: 22px;
+      margin: 8px 0 16px;
+    }
+    .content li {
+      font-size: 15px;
+      color: #C8D6E5;
+      line-height: 1.75;
+      margin-bottom: 8px;
+    }
+    .content strong { color: #FFFFFF; font-weight: 600; }
+    .content code {
+      background: rgba(59,130,246,0.12);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 13px;
+      color: #93C5FD;
+    }
+    .content blockquote {
+      border-left: 3px solid #3B82F6;
+      background: rgba(59,130,246,0.06);
+      padding: 12px 20px;
+      margin: 16px 0;
+      border-radius: 0 8px 8px 0;
+      color: #C8D6E5;
+      font-style: italic;
+    }
+
+    .step-block {
+      background: rgba(20,25,40,0.4);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin: 16px 0;
+    }
+    .step-block .step-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #3B82F6;
+      background: rgba(59,130,246,0.12);
+      padding: 3px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .callout {
+      background: rgba(59,130,246,0.08);
+      border-left: 3px solid #3B82F6;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #93C5FD;
+      line-height: 1.7;
+    }
+
+    .dont-list { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 18px 22px; }
+    .dont-list h3 { color: #FCA5A5; margin-top: 0; }
+    .dont-list li::marker { color: #EF4444; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="breadcrumb">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Bright_Data.svg/960px-Bright_Data.svg.png" alt="Bright Data" style="height:22px;">
+    </div>
+    <nav class="top-nav">
+      <a href="index.html">Workflows</a>
+      <a href="skills.html" class="active">Skills</a>
+    </nav>
+  </div>
+
+  <a href="skills.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    Back to skills
+  </a>
+
+  <section class="detail-hero">
+    <h1>Ask 3 AIs at Once</h1>
+    <p>One prompt → three answers as colored cards stacked under each other → one final card where Claude keeps what's genuinely good from all three. A super-prompt that fans a single question out to ChatGPT, Perplexity and Claude in parallel, shows each one's output in its own colored card, then combines the best of the lot into one.</p>
+  </section>
+
+  <div class="compat-bar">
+    <span class="compat-label">Works with</span>
+    <div class="compat-logos">
+      <img src="https://logo.svgcdn.com/logos/claude-icon.png" alt="Claude">
+      <img src="https://img.icons8.com/androidL/512/FFFFFF/chatgpt.png" alt="OpenAI">
+    </div>
+  </div>
+
+  <div class="download-row">
+    <a href="skills/ask-3-ais-at-once.md" download="ask-3-ais-at-once.md" class="download-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Skill
+    </a>
+  </div>
+
+  <div class="content">
+
+    <h2>Why use it</h2>
+    <p>Every AI has its own bias and blind spots. ChatGPT is conversational and broad. Perplexity is source-heavy and current. Claude is structured and nuanced. Asking only one means you only get one perspective. This skill fires the <strong>exact same prompt</strong> to all three at once, shows you their raw answers side-by-side, then synthesizes the strongest points into a single merged "best of" answer.</p>
+
+    <h2>How to use it</h2>
+
+    <div class="step-block">
+      <span class="step-tag">STEP 1 — INSTALL THE SKILL</span>
+      <p>Click <strong>Download Skill</strong> above. You get an <code>ask-3-ais-at-once.md</code> file. In Claude, open <strong>Settings → Capabilities → Skills</strong> and upload the file. The skill is now available across all your conversations.</p>
+    </div>
+
+    <div class="step-block">
+      <span class="step-tag">STEP 2 — CONNECT BRIGHT DATA MCP</span>
+      <p>The skill uses Bright Data to fetch what ChatGPT and Perplexity actually say. In Claude, go to <strong>Settings → Connectors → Add custom connector</strong> and paste this URL (replace <code>YOUR_API_TOKEN</code> with your Bright Data token):</p>
+      <p><code>https://mcp.brightdata.com/sse?token=YOUR_API_TOKEN&amp;groups=ai_insights</code></p>
+      <p>One-time setup. Get your Bright Data token at <a href="https://brightdata.com/cp/setting/users" target="_blank" style="color:#60A5FA;">brightdata.com/cp/setting/users</a>.</p>
+    </div>
+
+    <div class="step-block">
+      <span class="step-tag">STEP 3 — TRIGGER THE SKILL</span>
+      <p>In any conversation, just say it naturally:</p>
+      <ul>
+        <li>"Ask all 3 AIs: <em>what's the best CRM for a 5-person sales team?</em>"</li>
+        <li>"Send this to ChatGPT, Perplexity and Claude — what are the top SEO trends in 2026?"</li>
+        <li>"Compare LLM answers on this: <em>should I use Make or n8n?</em>"</li>
+        <li>"What do the 3 AIs say about Bright Data?"</li>
+      </ul>
+      <p>You can also just say "use Ask 3 AIs" and Claude will ask you for the prompt to run.</p>
+    </div>
+
+    <div class="step-block">
+      <span class="step-tag">STEP 4 — READ THE 3 ANSWERS, THEN THE BEST OF</span>
+      <p>Claude shows you a colored visual right in the chat:</p>
+      <ul>
+        <li><span style="color:#14B8A6;font-weight:600;">Teal card</span> → what <strong>ChatGPT</strong> said</li>
+        <li><span style="color:#A855F7;font-weight:600;">Purple card</span> → what <strong>Perplexity</strong> said</li>
+        <li><span style="color:#F97316;font-weight:600;">Coral card</span> → what <strong>Claude</strong> said (web search)</li>
+        <li><span style="color:#3B82F6;font-weight:600;">Blue card</span> → "Best of the three" — Claude takes the strongest points from each, drops the weak ones, and gives you one clean answer</li>
+      </ul>
+      <p>The whole thing is screenshot-ready and easy to share with your team.</p>
+    </div>
+
+    <h2>When it's most useful</h2>
+    <ul>
+      <li><strong>Buying decisions</strong> — "best CRM / SEO tool / project management app for [my use case]" → see if all 3 AIs converge on a name or if they disagree.</li>
+      <li><strong>Strategic questions</strong> — "should I do X or Y?" → get three independent perspectives before deciding.</li>
+      <li><strong>Brand visibility</strong> — "what do you know about [my company]?" → see how each AI describes you and what they get wrong.</li>
+      <li><strong>Fact-checking</strong> — if all 3 AIs agree on a fact, it's probably right. If they disagree, you need to dig deeper.</li>
+      <li><strong>Trend research</strong> — "what's hot in [industry] right now?" → catch what one AI misses.</li>
+    </ul>
+
+    <h2>Good to know</h2>
+    <ul>
+      <li>The prompt is sent <strong>exactly as you wrote it</strong> to all three — no rewording per engine, so the comparison is fair.</li>
+      <li>If one AI fails to respond (rare), it's marked as skipped and the merge happens on the other two.</li>
+      <li>Claude's answer is its own <strong>web-search</strong> response — not a scrape of the Claude app.</li>
+      <li>The most interesting cases are when the three disagree — the merged "Best of" tells you who said what and why it kept what it kept.</li>
+    </ul>
+
+  </div>
+
+</body>
+</html>

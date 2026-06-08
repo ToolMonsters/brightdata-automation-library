@@ -10,6 +10,8 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { scrollbar-gutter: stable; }
+
     body {
       font-family: 'Inter', -apple-system, sans-serif;
       background: #000000;
@@ -23,7 +25,7 @@
       padding: 18px 32px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 20px;
     }
     .breadcrumb {
       display: flex;
@@ -38,6 +40,24 @@
     }
     .breadcrumb span.divider { color: #4A5568; }
     .breadcrumb span.current { color: #8B95A5; font-weight: 400; }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 24px;
+    }
+    .top-nav a {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #8B95A5;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .top-nav a:hover { color: #fff; background: rgba(255,255,255,0.04); }
+    .top-nav a.active { color: #3B82F6; background: rgba(59,130,246,0.1); }
 
     .topbar-actions {
       display: flex;
@@ -227,18 +247,19 @@
       inset: 0;
       border-radius: 14px;
       background: radial-gradient(
-        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(59, 130, 246, 0.15),
-        transparent 40%
+        350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(59, 130, 246, 0.5),
+        rgba(59, 130, 246, 0.1) 30%,
+        transparent 60%
       );
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.15s ease;
       pointer-events: none;
       z-index: 0;
     }
     .scraper-card > * { position: relative; z-index: 1; }
-    .scraper-card:hover::before { opacity: 1; }
-    .scraper-card:hover {
+    .scraper-card.is-hover::before { opacity: 1; }
+    .scraper-card.is-hover {
       border-color: rgba(59,130,246,0.4);
       transform: translateY(-2px);
     }
@@ -371,14 +392,16 @@
   <div class="topbar">
     <div class="breadcrumb">
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Bright_Data.svg/960px-Bright_Data.svg.png" alt="Bright Data" style="height:22px;">
-      <span class="divider">/</span>
-      <span class="current">Automation Library</span>
     </div>
+    <nav class="top-nav">
+      <a href="index.html" class="active">Workflows</a>
+      <a href="skills.html">Skills</a>
+    </nav>
   </div>
 
   <!-- Hero -->
   <section class="hero">
-    <h1>Automation Library</h1>
+    <h1>Workflows</h1>
     <p>Pre-built automation templates to scrape websites, collect structured data, and push it wherever you need.</p>
     <div class="search-bar">
       <input type="text" id="search" placeholder="Search automations" oninput="filterCards()">
@@ -491,13 +514,24 @@
     }
 
     // Mouse-following glow effect on cards
+    function updateMousePosition(card, e) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    }
+
     document.querySelectorAll('.scraper-card').forEach(card => {
+      card.addEventListener('mouseenter', (e) => {
+        updateMousePosition(card, e);
+        card.classList.add('is-hover');
+      });
       card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
+        updateMousePosition(card, e);
+      });
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('is-hover');
       });
     });
   </script>
