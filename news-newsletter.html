@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automated News Newsletter - Bright Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #000000;
+      color: #E5E7EB;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topbar { padding: 18px 32px; display: flex; align-items: center; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .breadcrumb img { height: 22px; }
+    .breadcrumb span.divider { color: #4A5568; }
+    .breadcrumb a { color: #8B95A5; text-decoration: none; font-weight: 400; }
+    .breadcrumb a:hover { color: #fff; }
+    .breadcrumb span.current { color: #fff; font-weight: 500; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin: 32px 40px 0; font-size: 14px; font-weight: 500;
+      color: #8B95A5; text-decoration: none; transition: color 0.2s;
+    }
+    .back-link:hover { color: #60A5FA; }
+    .back-link svg { width: 16px; height: 16px; }
+
+    .detail-hero { max-width: 800px; margin: 24px auto 0; padding: 0 40px; }
+    .detail-hero h1 {
+      font-size: 36px; font-weight: 700; color: #FFFFFF;
+      letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .detail-hero p { font-size: 16px; color: #8B95A5; max-width: 640px; }
+
+    .platform-tabs {
+      max-width: 800px; margin: 40px auto 0; padding: 0 40px;
+      display: flex; gap: 0;
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+    }
+    .platform-tab {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 24px; font-size: 15px; font-weight: 600;
+      color: #FFFFFF; background: none; border: none; cursor: pointer;
+      border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+    }
+    .platform-tab img { height: 18px; width: 18px; border-radius: 4px; object-fit: cover; }
+    .platform-tab img[alt="n8n"] { height: 18px; width: 18px; border-radius: 4px; }
+    .platform-tab:hover { color: #60A5FA; }
+    .platform-tab.active { color: #3B82F6; border-bottom-color: #3B82F6; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .steps-container { max-width: 800px; margin: 0 auto; padding: 40px 40px 80px; }
+
+    .step { display: flex; gap: 20px; margin-bottom: 40px; }
+    .step-number {
+      flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(59,130,246,0.12); color: #3B82F6;
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-content { flex: 1; }
+    .step-title { font-size: 17px; font-weight: 700; color: #FFFFFF; margin-bottom: 8px; }
+    .step-desc { font-size: 15px; color: #8B95A5; line-height: 1.7; }
+    .step-desc code {
+      background: rgba(59,130,246,0.12); padding: 2px 7px; border-radius: 5px;
+      font-size: 13px; color: #93C5FD;
+    }
+    .step-desc ul { margin-top: 8px; padding-left: 20px; }
+    .step-desc li { margin-bottom: 4px; }
+    .step-desc strong { color: #E2E8F0; font-weight: 600; }
+
+    .callout {
+      background: rgba(59,130,246,0.08);
+      border-left: 3px solid #3B82F6;
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px; margin: 32px 0;
+      font-size: 14px; color: #93C5FD; line-height: 1.7;
+    }
+    .callout strong { font-weight: 700; color: #FFFFFF; }
+    .get-template-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 8px; padding: 10px 22px;
+      background: #3B82F6; color: #fff;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      border: none; border-radius: 9999px; cursor: pointer;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .get-template-btn:hover { background: #2563EB; }
+    .get-template-btn img { height: 18px; width: 18px; border-radius: 4px; object-fit: cover; }
+
+    .code-block {
+      background: #0A0E1A;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 12px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      color: #93C5FD;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .troubleshooting { margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .troubleshooting h3 { font-size: 18px; font-weight: 700; color: #FFFFFF; margin-bottom: 16px; }
+    .troubleshooting table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .troubleshooting th {
+      text-align: left; padding: 10px 14px;
+      background: rgba(59,130,246,0.08); font-weight: 600; color: #FFFFFF;
+    }
+    .troubleshooting th:first-child { border-radius: 8px 0 0 8px; }
+    .troubleshooting th:last-child { border-radius: 0 8px 8px 0; }
+    .troubleshooting td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #8B95A5; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="breadcrumb">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Bright_Data.svg/960px-Bright_Data.svg.png" alt="Bright Data">
+      <span class="divider">/</span>
+      <a href="index.html">Automation Library</a>
+      <span class="divider">/</span>
+      <span class="current">Automated News Newsletter</span>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    Back to automations
+  </a>
+
+  <section class="detail-hero">
+    <h1>Automated News Newsletter</h1>
+    <p>On a schedule, Bright Data searches the web for news on any topic, picks the top five stories, then scrapes and cleans the full article text of each one. Claude writes a polished, branded newsletter from the aggregated content and it goes out to your list via Beehiiv, ConvertKit, Mailchimp, or Gmail.</p>
+  </section>
+
+  <div class="platform-tabs">
+    <button class="platform-tab" onclick="switchTab('zapier')">
+      <img src="logos/zapier.jpg" alt="Zapier"> Zapier
+    </button>
+    <button class="platform-tab" onclick="switchTab('make')">
+      <img src="logos/make.webp" alt="Make"> Make
+    </button>
+    <button class="platform-tab active" onclick="switchTab('n8n')">
+      <img src="logos/n8n.svg" alt="n8n"> n8n
+    </button>
+  </div>
+
+  <div class="tab-content" id="tab-zapier">
+    <div class="steps-container">
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Zapier template coming soon.</strong> Step-by-step guide in progress.
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-make">
+    <div class="steps-container">
+
+      <div class="callout">
+        <strong>What this scenario does:</strong> <strong>Bright Data</strong> runs a news search across the web for your topic and returns the results as structured JSON. That JSON goes straight to <strong>Claude</strong>, which picks the <strong>top 5 stories</strong> and writes the newsletter as ready-to-send HTML. It goes out to your list via <strong>Beehiiv, ConvertKit, Mailchimp,</strong> or <strong>Gmail</strong>.
+        <br><br>3 modules: <strong>Bright Data (Web Unlocker)</strong> → <strong>Claude (Write Newsletter)</strong> → <strong>Email (Beehiiv / ConvertKit / Mailchimp / Gmail)</strong>
+        <br><br>
+        <!-- TODO: replace href="#" with the make.com template URL -->
+        <a href="#" target="_blank" class="get-template-btn">
+          <img src="logos/make.webp" alt="Make">
+          Get Make template
+        </a>
+      </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Simpler than the n8n version:</strong> this scenario summarizes straight from the news search result (title + snippet + link), so it skips the per-article scraping loop. It's faster and cheaper. Want full-article summaries? Add a Bright Data module between steps 1 and 2 to fetch each link, or use the n8n template which already loops.
+      </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Topic and delivery are swappable:</strong> the scenario searches the web for news on <code>AI automation</code> by default. Change the query to any topic, and send to your audience with <strong>Beehiiv</strong>, <strong>ConvertKit</strong>, <strong>Mailchimp</strong>, <strong>Brevo</strong>, <strong>Outlook</strong>, or <strong>Gmail</strong> - or post the HTML straight to <strong>Slack / Notion / a webhook</strong>.
+      </div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Activate Web Unlocker on Bright Data</div>
+          <div class="step-desc">
+            <strong>This is what makes the news search reliable</strong> - Web Unlocker handles anti-bot, JavaScript, and geo-blocks automatically, on the search results and on any news site you land on.
+            <ul>
+              <li>Log in at <a href="https://brightdata.com" target="_blank" style="color:#60A5FA;">brightdata.com</a></li>
+              <li>Sidebar → <strong>Proxies & Scraping Infrastructure</strong></li>
+              <li>Click <strong>Add</strong> → select <strong>Web Unlocker</strong></li>
+              <li>Click <strong>Start with Web Unlocker</strong> or <em>Create zone</em></li>
+              <li>Name it <code>n8n_serp</code> (the name this blueprint expects) and save</li>
+            </ul>
+            Full docs: <a href="https://docs.brightdata.com/scraping-automation/web-unlocker/introduction" target="_blank" style="color:#60A5FA;">Web Unlocker introduction</a>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Module 1 - Bright Data Web Unlocker (search the web for news)</div>
+          <div class="step-desc">
+            The first module runs a news search across the web via Bright Data and returns the parsed results. Pre-configured:
+            <ul>
+              <li><strong>Zone</strong> → <code>n8n_serp</code> (the zone from step 1)</li>
+              <li><strong>URL</strong> → <code>https://www.google.com/search?q=AI+automation&tbm=nws&gl=us&hl=en&brd_json=1</code></li>
+              <li><strong>Format</strong> → <code>Raw</code> &nbsp;·&nbsp; <strong>Method</strong> → <code>GET</code> &nbsp;·&nbsp; <strong>Async</strong> → off</li>
+            </ul>
+            <strong>The trick is <code>&brd_json=1</code></strong> at the end of the URL - it makes Bright Data parse the page and return a <code>news</code> array (titles, links, sources) you can reference directly as <code>{{2.result.news}}</code>, no parser needed.
+            <br><br>
+            Connect your Bright Data account. <strong>To change the topic</strong>, edit the <code>q=</code> part of the URL (e.g. <code>q=fintech+funding</code>). The <code>tbm=nws</code> param scopes the search to news results.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Module 2 - Claude (write the newsletter)</div>
+          <div class="step-desc">
+            <strong>This is where the brief gets written.</strong> The <strong>Anthropic Claude (Opus 4.8)</strong> module receives the news JSON and writes the newsletter as clean HTML. Pre-configured:
+            <ul>
+              <li><strong>Model</strong> → <code>claude-opus-4-8</code></li>
+              <li><strong>Max tokens</strong> → <code>2000</code></li>
+              <li><strong>Prompt</strong> → includes <code>{{2.result.news}}</code> and asks for the <strong>top 5</strong> stories only</li>
+            </ul>
+            For each story Claude returns a bold headline, a 1-2 sentence summary <strong>in its own words</strong>, and a "Read more" link - plus a one-line intro. Output is pure HTML, no markdown fences.
+            <br><br>
+            Connect your Anthropic credentials. <strong>Tune the voice</strong> by editing the prompt. <strong>Want a different LLM?</strong> Swap for OpenAI or another provider module.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Module 3 - Send the newsletter (Beehiiv / ConvertKit / Mailchimp / Gmail)</div>
+          <div class="step-desc">
+            The blueprint ships with <strong>Gmail - Send an Email</strong> so it runs out of the box. Connect your account and set:
+            <ul>
+              <li><strong>To</strong> → your recipient(s)</li>
+              <li><strong>Subject</strong> → e.g. <code>Your AI Industry Brief</code></li>
+              <li><strong>Content</strong> → map to Claude's output <code>{{4.result}}</code>, and set the content type to <strong>HTML</strong></li>
+            </ul>
+            <strong>Sending to a real audience?</strong> Swap the Gmail module for your newsletter platform and map the same HTML body:
+            <ul>
+              <li><strong>Beehiiv</strong> - create a post / send a broadcast via its API</li>
+              <li><strong>ConvertKit</strong> - create a broadcast</li>
+              <li><strong>Mailchimp</strong> - create and send a campaign</li>
+              <li><strong>Brevo / Outlook / SMTP</strong> - any email module</li>
+            </ul>
+            You can also post the HTML to <strong>Slack / Notion / a webhook</strong> instead of emailing.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Schedule, test, and activate</div>
+          <div class="step-desc">
+            Click <strong>Run once</strong> and send yourself a test email first to check the formatting. When you're happy, open the scenario's <strong>schedule settings</strong> (clock icon on the first module) to set the cadence - daily, weekly, etc. - and toggle the scenario <strong>ON</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>Troubleshooting</h3>
+        <table>
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td><code>{{2.result.news}}</code> is empty</td><td>Make sure <code>&brd_json=1</code> is still at the end of the URL and <code>tbm=nws</code> is present. Without <code>brd_json</code> you get raw HTML, not the parsed array.</td></tr>
+            <tr><td>Claude output has markdown fences</td><td>The prompt says HTML only. If a model adds <code>```html</code>, add a small Text Parser / Set Variable to strip fences before Gmail.</td></tr>
+            <tr><td>Email body shows raw HTML tags</td><td>Set the Gmail content type to <strong>HTML</strong>, not plain text.</td></tr>
+            <tr><td>Newsletter too long / too short</td><td>Adjust <strong>Max tokens</strong> on the Claude module, or tell the prompt how many stories and how many sentences each.</td></tr>
+            <tr><td>Want full-article summaries</td><td>Insert a Bright Data module that fetches each <code>link</code> (format markdown) before Claude, or use the n8n template which already loops over articles.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="tab-content active" id="tab-n8n">
+    <div class="steps-container">
+
+      <div class="callout">
+        <strong>What this workflow does:</strong> On a schedule, n8n uses <strong>Bright Data</strong> to search the web for news on your topic, a Code node filters out videos and duplicates and keeps the <strong>top 5 stories</strong>, then loops through each one to scrape the <strong>full article</strong> via Bright Data and clean it into plain text. After the loop, all articles are aggregated and sent to <strong>Claude</strong>, which writes the newsletter as ready-to-send HTML. It goes out to your list via <strong>Beehiiv, ConvertKit, Mailchimp,</strong> or <strong>Gmail</strong>.
+        <br><br>9 nodes: <strong>Schedule</strong> → <strong>Bright Data (News Search)</strong> → <strong>Select Top 5 (Code)</strong> → <strong>Loop</strong> → <strong>Bright Data (Article)</strong> → <strong>Sanitize (Code)</strong> → <strong>Aggregate</strong> → <strong>Claude (Write Newsletter)</strong> → <strong>Email</strong>
+        <br><br>
+        <!-- TODO: replace href="#" with the n8n.io template URL -->
+        <a href="#" target="_blank" class="get-template-btn">
+          <img src="logos/n8n.svg" alt="n8n">
+          Get n8n template
+        </a>
+      </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Topic and delivery are swappable:</strong> the template searches the web for news on <code>AI automation</code> by default. Change the query to any topic, and send to your audience with <strong>Beehiiv</strong>, <strong>ConvertKit</strong>, <strong>Mailchimp</strong>, <strong>Brevo</strong>, <strong>Resend</strong>, <strong>Outlook</strong>, or <strong>Gmail</strong> - or post the HTML straight to <strong>Slack / Notion / a webhook</strong>.
+      </div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Activate Web Unlocker on Bright Data</div>
+          <div class="step-desc">
+            <strong>This is what makes the scraping reliable</strong> - Web Unlocker handles anti-bot, JavaScript rendering, and geo-blocks, on the news search and on any news site you land on.
+            <ul>
+              <li>Log in at <a href="https://brightdata.com" target="_blank" style="color:#60A5FA;">brightdata.com</a></li>
+              <li>Sidebar → <strong>Proxies & Scraping Infrastructure</strong></li>
+              <li>Click <strong>Add</strong> → select <strong>Web Unlocker</strong></li>
+              <li>Click <strong>Start with Web Unlocker</strong> or <em>Create zone</em></li>
+              <li>Name it <code>n8n_unlocker</code> (the name the template expects) and save</li>
+            </ul>
+            Full docs: <a href="https://docs.brightdata.com/scraping-automation/web-unlocker/introduction" target="_blank" style="color:#60A5FA;">Web Unlocker introduction</a>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Node 1 - Schedule Trigger (set your frequency)</div>
+          <div class="step-desc">
+            The template ships with a <strong>Schedule Trigger</strong> set to fire <strong>every Monday</strong> (a weekly brief). Click the node to change the cadence - daily, twice a week, monthly, whatever fits your audience.
+            <br><br>
+            <strong>Want a different trigger?</strong> Swap for a <strong>Webhook</strong> (send on demand), <strong>Form Trigger</strong> (generate a brief by submitting a topic), or <strong>Chat Trigger</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Node 2 - Search the web for news with Bright Data</div>
+          <div class="step-desc">
+            The <strong>Bright Data</strong> node runs a news search across the web and returns the results as clean structured JSON. Pre-configured:
+            <ul>
+              <li><strong>Zone</strong> → <code>n8n_unlocker</code> (the zone from step 1)</li>
+              <li><strong>Country</strong> → <code>us</code> (change for a different geo)</li>
+              <li><strong>URL</strong> → <code>https://www.google.com/search?q=AI+automation&tbm=nws&gl=us&hl=en&brd_json=1</code></li>
+            </ul>
+            <strong>The trick is <code>&brd_json=1</code></strong> at the end of the URL - it tells Bright Data to parse the page and return a <code>news</code> array as JSON instead of raw HTML, so you get titles, links, and sources without writing a parser.
+            <br><br>
+            <strong>To change the topic</strong>, just edit the <code>q=</code> part of the URL (e.g. <code>q=fintech+funding</code>, <code>q=climate+tech</code>). The <code>tbm=nws</code> param is what scopes the search to news results.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Node 3 - Select Top 5 News Stories (Code)</div>
+          <div class="step-desc">
+            A <strong>Code node</strong> takes the raw <code>news</code> array and cleans it down to the stories worth covering:
+            <ul>
+              <li>Drops YouTube / video links (keeps real articles only)</li>
+              <li>Removes entries missing a title or link</li>
+              <li>De-duplicates by title</li>
+              <li>Keeps the <strong>top 5</strong> and emits each as a separate item for the loop</li>
+            </ul>
+            <strong>Want a longer brief?</strong> Change <code>.slice(0, 5)</code> to <code>10</code> (or any number). No other setup needed.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Node 4 - Loop Over News Stories (Split In Batches)</div>
+          <div class="step-desc">
+            The <strong>Loop</strong> node processes one story at a time. Each pass scrapes that story's full article (next two nodes), then control returns to the loop. When every story is done, the loop's <strong>"done"</strong> output continues to the aggregate + newsletter steps.
+            <br><br>
+            This keeps things resilient - if one article fails to scrape, the rest still make it into the newsletter. No setup needed.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <div class="step-title">Node 5 - Fetch Article Content with Bright Data</div>
+          <div class="step-desc">
+            For each story in the loop, the <strong>Bright Data</strong> node opens the article link and returns the page. Pre-configured:
+            <ul>
+              <li><strong>Zone</strong> → <code>n8n_unlocker</code></li>
+              <li><strong>URL</strong> → <code>{{ $json.link }}</code> from the current story</li>
+              <li><strong>Format</strong> → <code>markdown</code> (clean text, no HTML soup)</li>
+            </ul>
+            Returning <strong>markdown</strong> means most of the page chrome is already stripped before it reaches the cleanup node. Web Unlocker handles paywalls, cookie banners, and JS rendering automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <div class="step-title">Node 6 - Sanitize Article Content (Code)</div>
+          <div class="step-desc">
+            A <strong>Code node</strong> turns the raw markdown into clean newsletter-ready text:
+            <ul>
+              <li>Handles whatever shape Bright Data returns (array, string, or object)</li>
+              <li>Jumps to the last <code>#</code> heading to skip nav and headers</li>
+              <li>Strips markdown links and images, keeping the visible text</li>
+              <li>Keeps only real sentences (lines &gt; 50 chars) and caps it at <strong>2,500 chars</strong></li>
+              <li>Re-attaches the <code>title</code>, <code>link</code>, and <code>source</code> from the loop</li>
+            </ul>
+            No setup needed. Raise the <code>2500</code> cap if you want Claude to see more of each article.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+          <div class="step-title">Node 7 - Compile All Articles (Aggregate)</div>
+          <div class="step-desc">
+            Once the loop finishes, the <strong>Aggregate</strong> node collects every cleaned article into a single item (one <code>data</code> array) so Claude can see all five stories at once. No setup needed.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">9</div>
+        <div class="step-content">
+          <div class="step-title">Node 8 - Compose Newsletter with Claude</div>
+          <div class="step-desc">
+            <strong>This is where the brief gets written.</strong> The <strong>Anthropic Claude (Opus 4.8)</strong> node receives all five cleaned articles and writes the newsletter as clean HTML, ready to drop into an email.
+            <br><br>
+            The system prompt tells Claude to produce, for each story: a bold headline, a 2-3 sentence summary <strong>in its own words</strong> (not copied), and a "Read more" link - plus a one-line intro at the top. Output is pure HTML, no markdown fences.
+            <br><br>
+            Connect your Anthropic credentials. <strong>Tune the voice</strong> by editing the system prompt (tone, length, sections, add an emoji header, etc.). <strong>Want a different LLM?</strong> Swap for OpenAI GPT-5, Gemini, or a local model.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">10</div>
+        <div class="step-content">
+          <div class="step-title">Node 9 - Send the Newsletter (Beehiiv / ConvertKit / Mailchimp / Gmail)</div>
+          <div class="step-desc">
+            The template ships with a <strong>Gmail</strong> node so it runs out of the box - pre-configured with a subject (<code>Your AI Industry Brief</code>) and the body mapped to Claude's output.
+            <ul>
+              <li>Connect your Gmail account, set <strong>To</strong>, <strong>Subject</strong>, and confirm the body maps to <code>{{ $json.content[0].text }}</code></li>
+            </ul>
+            <strong>Sending to a real audience?</strong> Swap the Gmail node for your newsletter platform and map the same HTML body:
+            <ul>
+              <li><strong>Beehiiv</strong> - create a post / send a broadcast (HTTP Request node to its API)</li>
+              <li><strong>ConvertKit</strong> - create a broadcast</li>
+              <li><strong>Mailchimp</strong> - create and send a campaign</li>
+              <li><strong>Brevo / Resend / Customer.io / Outlook / SMTP</strong> - any email node</li>
+            </ul>
+            You can also post it to <strong>Slack / Notion / a webhook</strong> instead of email.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">11</div>
+        <div class="step-content">
+          <div class="step-title">Test and activate</div>
+          <div class="step-desc">
+            Click <strong>Test workflow</strong>. Watch it run the news search, pick five stories, scrape each article, and produce the HTML in the Claude node. Send yourself a test email first to check the formatting.
+            <br><br>
+            Once you're happy with the topic and the voice, set the schedule and toggle the workflow to <strong>Active</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>Troubleshooting</h3>
+        <table>
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>News search node returns no <code>news</code> array</td><td>Make sure <code>&brd_json=1</code> is still at the end of the URL and <code>tbm=nws</code> is present. Without <code>brd_json</code> you get raw HTML, not the parsed array.</td></tr>
+            <tr><td>Empty or junk article text</td><td>The Sanitize node keeps lines &gt; 50 chars. For sites that load body text via JS, the markdown format usually handles it; if not, raise the char cap or relax the line filter.</td></tr>
+            <tr><td>Fewer than 5 stories in the brief</td><td>The dedupe + video filter can thin out results. Broaden the query, or pull more before slicing (e.g. scrape, then <code>.slice(0, 8)</code>).</td></tr>
+            <tr><td>Claude output has markdown fences</td><td>The prompt says HTML only, but if a model adds <code>```html</code>, add a tiny Code node to strip fences before Gmail.</td></tr>
+            <tr><td>Email body shows raw HTML tags</td><td>Make sure the Gmail node is sending as <strong>HTML</strong>, not plain text.</td></tr>
+            <tr><td>One article kills the run</td><td>Split In Batches continues past failures by design - check the execution log to see which link errored.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function switchTab(platform) {
+      document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById('tab-' + platform).classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

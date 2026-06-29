@@ -52,7 +52,7 @@
       color: #FFFFFF; background: none; border: none; cursor: pointer;
       border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
     }
-    .platform-tab img { height: 18px; }
+    .platform-tab img { height: 18px; width: 18px; border-radius: 4px; object-fit: cover; }
     .platform-tab img[alt="n8n"] { height: 18px; width: 18px; border-radius: 4px; }
     .platform-tab:hover { color: #60A5FA; }
     .platform-tab.active { color: #3B82F6; border-bottom-color: #3B82F6; }
@@ -96,7 +96,7 @@
       text-decoration: none; transition: background 0.2s;
     }
     .get-template-btn:hover { background: #2563EB; }
-    .get-template-btn img { height: 18px; }
+    .get-template-btn img { height: 18px; width: 18px; border-radius: 4px; object-fit: cover; }
 
     .code-block {
       background: #0A0E1A;
@@ -149,13 +149,13 @@
 
   <div class="platform-tabs">
     <button class="platform-tab active" onclick="switchTab('zapier')">
-      <img src="https://app.fullenrich.com/app/_app/immutable/assets/zapier.f1331444.svg" alt="Zapier"> Zapier
+      <img src="logos/zapier.jpg" alt="Zapier"> Zapier
     </button>
     <button class="platform-tab" onclick="switchTab('make')">
-      <img src="https://app.fullenrich.com/app/_app/immutable/assets/make.d929597e.svg" alt="Make"> Make
+      <img src="logos/make.webp" alt="Make"> Make
     </button>
     <button class="platform-tab" onclick="switchTab('n8n')">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8b13FupbJiqRDcYQbK4BfEcAJ6S7eA8I5oQ&s" alt="n8n"> n8n
+      <img src="logos/n8n.svg" alt="n8n"> n8n
     </button>
   </div>
 
@@ -175,7 +175,7 @@
         <br><br>Flow: <strong>Storage (Searches)</strong> → <strong>Bright Data (Scrape LinkedIn jobs)</strong> → <strong>GPT (Parse jobs JSON)</strong> → <strong>Iterator (loop jobs)</strong> → <strong>GPT (Qualify + draft email)</strong> → <strong>CRM (Create Deal)</strong> → <strong>Slack (Alert)</strong>
         <br><br>
         <a href="https://www.make.com/en/integration/19071-new-job-posting-as-outbound-sales-signal-powered-by-bright-data?templatePublicId=19071" target="_blank" class="get-template-btn">
-          <img src="https://app.fullenrich.com/app/_app/immutable/assets/make.d929597e.svg" alt="Make">
+          <img src="logos/make.webp" alt="Make">
           Get Make template
         </a>
       </div>
@@ -412,7 +412,7 @@
         <br><br>10 nodes: <strong>Schedule</strong> → <strong>Airtable Search</strong> → <strong>Loop</strong> → <strong>Bright Data</strong> → <strong>GPT (extract jobs)</strong> → <strong>Code (parse JSON)</strong> → <strong>GPT (score + email)</strong> → <strong>IF (filter)</strong> → <strong>HubSpot</strong> → <strong>Slack</strong>
         <br><br>
         <a href="https://n8n.io/workflows/15533-track-linkedin-hiring-signals-with-bright-data-openai-airtable-hubspot-and-slack/" target="_blank" class="get-template-btn">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8b13FupbJiqRDcYQbK4BfEcAJ6S7eA8I5oQ&s" alt="n8n">
+          <img src="logos/n8n.svg" alt="n8n">
           Get n8n template
         </a>
       </div>
