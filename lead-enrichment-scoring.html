@@ -354,8 +354,7 @@
         <strong>What this workflow does:</strong> When a new row lands in your <strong>Google Sheet</strong>, n8n reads the leads and loops through them one by one. For each, <strong>Bright Data</strong> scrapes the person's <strong>LinkedIn profile</strong> and their <strong>company</strong>, <strong>Claude</strong> scores the lead 0-100 against your ICP, and the row is updated - leads scoring <strong>≥ 70</strong> are marked <code>HOT 🔥</code>, the rest <code>DONE</code>.
         <br><br>11 nodes: <strong>Sheets Trigger</strong> → <strong>Read Leads</strong> → <strong>Loop</strong> → <strong>Bright Data (Profile)</strong> → <strong>Wait</strong> → <strong>Bright Data (Company)</strong> → <strong>Wait</strong> → <strong>Claude (Score)</strong> → <strong>Parse JSON</strong> → <strong>IF (≥70?)</strong> → <strong>Update Sheet (HOT / DONE)</strong>
         <br><br>
-        <!-- TODO: replace href="#" with the n8n.io template URL -->
-        <a href="#" target="_blank" class="get-template-btn">
+        <a href="https://n8n.io/workflows/16683-score-linkedin-leads-in-google-sheets-with-bright-data-and-claude/" target="_blank" class="get-template-btn">
           <img src="logos/n8n.svg" alt="n8n">
           Get n8n template
         </a>
