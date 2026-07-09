@@ -299,8 +299,7 @@
         <strong>What this workflow does:</strong> On a schedule, n8n uses <strong>Bright Data</strong> to search the web for news on your topic, a Code node filters out videos and duplicates and keeps the <strong>top 5 stories</strong>, then loops through each one to scrape the <strong>full article</strong> via Bright Data and clean it into plain text. After the loop, all articles are aggregated and sent to <strong>Claude</strong>, which writes the newsletter as ready-to-send HTML. It goes out to your list via <strong>Beehiiv, ConvertKit, Mailchimp,</strong> or <strong>Gmail</strong>.
         <br><br>9 nodes: <strong>Schedule</strong> → <strong>Bright Data (News Search)</strong> → <strong>Select Top 5 (Code)</strong> → <strong>Loop</strong> → <strong>Bright Data (Article)</strong> → <strong>Sanitize (Code)</strong> → <strong>Aggregate</strong> → <strong>Claude (Write Newsletter)</strong> → <strong>Email</strong>
         <br><br>
-        <!-- TODO: replace href="#" with the n8n.io template URL -->
-        <a href="#" target="_blank" class="get-template-btn">
+        <a href="https://n8n.io/workflows/16675-send-weekly-curated-news-newsletters-with-bright-data-claude-and-gmail/" target="_blank" class="get-template-btn">
           <img src="logos/n8n.svg" alt="n8n">
           Get n8n template
         </a>
