@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Shopping Price Monitor - Bright Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #000000;
+      color: #E5E7EB;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topbar { padding: 18px 32px; display: flex; align-items: center; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .breadcrumb img { height: 22px; }
+    .breadcrumb span.divider { color: #4A5568; }
+    .breadcrumb a { color: #8B95A5; text-decoration: none; font-weight: 400; }
+    .breadcrumb a:hover { color: #fff; }
+    .breadcrumb span.current { color: #fff; font-weight: 500; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin: 32px 40px 0; font-size: 14px; font-weight: 500;
+      color: #8B95A5; text-decoration: none; transition: color 0.2s;
+    }
+    .back-link:hover { color: #60A5FA; }
+    .back-link svg { width: 16px; height: 16px; }
+
+    .detail-hero { max-width: 800px; margin: 24px auto 0; padding: 0 40px; }
+    .detail-hero h1 {
+      font-size: 36px; font-weight: 700; color: #FFFFFF;
+      letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .detail-hero p { font-size: 16px; color: #8B95A5; max-width: 640px; }
+
+    .platform-tabs {
+      max-width: 800px; margin: 40px auto 0; padding: 0 40px;
+      display: flex; gap: 0;
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+    }
+    .platform-tab {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 24px; font-size: 15px; font-weight: 600;
+      color: #FFFFFF; background: none; border: none; cursor: pointer;
+      border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+    }
+    .platform-tab img { height: 18px; width: 18px; border-radius: 4px; object-fit: cover; }
+    .platform-tab:hover { color: #60A5FA; }
+    .platform-tab.active { color: #3B82F6; border-bottom-color: #3B82F6; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .steps-container { max-width: 800px; margin: 0 auto; padding: 40px 40px 80px; }
+
+    .step { display: flex; gap: 20px; margin-bottom: 40px; }
+    .step-number {
+      flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(59,130,246,0.12); color: #3B82F6;
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-content { flex: 1; }
+    .step-title { font-size: 17px; font-weight: 700; color: #FFFFFF; margin-bottom: 8px; }
+    .step-desc { font-size: 15px; color: #8B95A5; line-height: 1.7; }
+    .step-desc code {
+      background: rgba(59,130,246,0.12); padding: 2px 7px; border-radius: 5px;
+      font-size: 13px; color: #93C5FD;
+    }
+    .step-desc ul { margin-top: 8px; padding-left: 20px; }
+    .step-desc li { margin-bottom: 4px; }
+    .step-desc strong { color: #E2E8F0; font-weight: 600; }
+
+    .callout {
+      background: rgba(59,130,246,0.08);
+      border-left: 3px solid #3B82F6;
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px; margin: 32px 0;
+      font-size: 14px; color: #93C5FD; line-height: 1.7;
+    }
+    .callout strong { font-weight: 700; color: #FFFFFF; }
+    .get-template-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 8px; padding: 10px 22px;
+      background: #3B82F6; color: #fff;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      border: none; border-radius: 9999px; cursor: pointer;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .get-template-btn:hover { background: #2563EB; }
+    .get-template-btn img { height: 18px; width: 18px; border-radius: 4px; object-fit: cover; }
+
+    .code-block {
+      background: #0A0E1A;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 12px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      color: #93C5FD;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .sheet-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+    .sheet-table th { text-align: left; padding: 8px 12px; background: rgba(59,130,246,0.08); font-weight: 600; color: #FFFFFF; }
+    .sheet-table th:first-child { border-radius: 8px 0 0 0; }
+    .sheet-table th:last-child { border-radius: 0 8px 0 0; }
+    .sheet-table td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #8B95A5; }
+    .sheet-table td:first-child { color: #93C5FD; font-family: 'SF Mono', monospace; }
+
+    .troubleshooting { margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .troubleshooting h3 { font-size: 18px; font-weight: 700; color: #FFFFFF; margin-bottom: 16px; }
+    .troubleshooting table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .troubleshooting th {
+      text-align: left; padding: 10px 14px;
+      background: rgba(59,130,246,0.08); font-weight: 600; color: #FFFFFF;
+    }
+    .troubleshooting th:first-child { border-radius: 8px 0 0 8px; }
+    .troubleshooting th:last-child { border-radius: 0 8px 8px 0; }
+    .troubleshooting td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #8B95A5; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="breadcrumb">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Bright_Data.svg/960px-Bright_Data.svg.png" alt="Bright Data">
+      <span class="divider">/</span>
+      <a href="index.html">Automation Library</a>
+      <span class="divider">/</span>
+      <span class="current">Google Shopping Price Monitor</span>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    Back to automations
+  </a>
+
+  <section class="detail-hero">
+    <h1>Google Shopping Price Monitor</h1>
+    <p>Track the lowest price for any product across Google Shopping, on autopilot. List your products in a Google Sheet, and on a schedule Bright Data pulls the Shopping results, Claude filters out accessories and finds the genuine lowest price, and the sheet is updated with the price, the retailer, and a timestamp.</p>
+  </section>
+
+  <div class="platform-tabs">
+    <button class="platform-tab" onclick="switchTab('zapier')">
+      <img src="logos/zapier.jpg" alt="Zapier"> Zapier
+    </button>
+    <button class="platform-tab active" onclick="switchTab('make')">
+      <img src="logos/make.webp" alt="Make"> Make
+    </button>
+    <button class="platform-tab" onclick="switchTab('n8n')">
+      <img src="logos/n8n.svg" alt="n8n"> n8n
+    </button>
+  </div>
+
+  <div class="tab-content" id="tab-zapier">
+    <div class="steps-container">
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Zapier template coming soon.</strong> Step-by-step guide in progress.
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content active" id="tab-make">
+    <div class="steps-container">
+
+      <div class="callout">
+        <strong>What this scenario does:</strong> On a schedule, it reads your product list from a <strong>Google Sheet</strong>. For each product, <strong>Bright Data</strong> queries its Google Shopping dataset (async: it returns a snapshot, the scenario waits, then pulls the results). <strong>Claude</strong> reads the results, throws out accessories (cases, cables, chargers…) and picks the <strong>genuine lowest price</strong>, and the row is updated with the price, retailer, and timestamp.
+        <br><br>8 modules: <strong>Google Sheets (Read)</strong> → <strong>Bright Data (Filter Dataset)</strong> → <strong>Sleep</strong> → <strong>Get Snapshot Metadata</strong> → <strong>Get Snapshot Content</strong> → <strong>Claude (Find Lowest Price)</strong> → <strong>Parse JSON</strong> → <strong>Google Sheets (Update Row)</strong>
+        <br><br>
+        <!-- TODO: replace href="#" with the make.com template URL -->
+        <a href="#" target="_blank" class="get-template-btn">
+          <img src="logos/make.webp" alt="Make">
+          Get Make template
+        </a>
+      </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Why Claude is in the loop:</strong> a raw Google Shopping search for "AirPods Pro" returns the product <em>plus</em> dozens of cases, tips, and cables - often cheaper than the product itself. A naive "min price" would report the $5 case. Claude keeps only the real product before picking the lowest price, so the number you track is honest.
+      </div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Get your Bright Data API token</div>
+          <div class="step-desc">
+            This template reads Bright Data's <strong>Google Shopping products</strong> dataset (<code>gd_m31f2k0d2m1bah4f3b</code>) - clean, structured product records (title, final_price, currency, tags, rating…), no scraping to maintain.
+            <ul>
+              <li>Grab your API token at <a href="https://brightdata.com/cp/setting/users" target="_blank" style="color:#60A5FA;">brightdata.com/cp/setting/users</a></li>
+              <li>You'll paste it when you connect the Bright Data modules</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Set up your Google Sheet</div>
+          <div class="step-desc">
+            One row per product you track. Create a sheet (<code>Sheet1</code>) with:
+            <table class="sheet-table">
+              <thead><tr><th>Col</th><th>Header</th><th>Filled by</th></tr></thead>
+              <tbody>
+                <tr><td>A</td><td>Product Keyword</td><td>you (e.g. <code>AirPods Pro 2</code>)</td></tr>
+                <tr><td>B</td><td>Lowest Price</td><td>the scenario</td></tr>
+                <tr><td>C</td><td>Retailer</td><td>the scenario</td></tr>
+                <tr><td>D</td><td>Last Checked</td><td>the scenario (timestamp)</td></tr>
+              </tbody>
+            </table>
+            You only fill <strong>column A</strong>. Be specific with the keyword (model + variant) so the match is clean.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Module 1 - Google Sheets (read the product list)</div>
+          <div class="step-desc">
+            Reads your product rows. Pre-configured: point it to your spreadsheet, sheet → <code>Sheet1</code>, headers → Yes, limit → 10. Connect your Google account. Each row flows through the rest one at a time.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Module 2 - Bright Data (query the Shopping dataset)</div>
+          <div class="step-desc">
+            The <strong>Filter Dataset</strong> module searches the Google Shopping products dataset for your keyword. Pre-configured:
+            <ul>
+              <li><strong>Dataset</strong> → <code>gd_m31f2k0d2m1bah4f3b</code> (Google Shopping products)</li>
+              <li><strong>Filter</strong> → <code>title includes {{Product Keyword}}</code></li>
+              <li><strong>Records limit</strong> → 10</li>
+            </ul>
+            This is <strong>async</strong>: it kicks off the query and returns a <code>snapshot_id</code> (not the data yet). Connect your Bright Data account.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Module 3 - Sleep (let the snapshot build)</div>
+          <div class="step-desc">
+            A <strong>Sleep</strong> module pauses <strong>300 seconds</strong> to give Bright Data time to prepare the snapshot before you ask for it. No setup needed - lower it if your snapshots are consistently ready sooner.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <div class="step-title">Module 4 - Get Snapshot Metadata (check status)</div>
+          <div class="step-desc">
+            The <strong>Get Snapshot Metadata</strong> module checks the snapshot from Module 2 and returns its <code>status</code>. When the query is finished, status becomes <code>ready</code>. Pre-mapped to the <code>snapshot_id</code>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <div class="step-title">Module 5 - Get Snapshot Content (pull the products)</div>
+          <div class="step-desc">
+            The <strong>Get Snapshot Content</strong> module downloads the actual product records as <strong>JSON</strong>.
+            <ul>
+              <li><strong>Filter</strong> → only runs when <code>status = ready</code> (so it won't grab a half-built snapshot)</li>
+              <li><strong>Format</strong> → <code>json</code></li>
+            </ul>
+            <strong>If a snapshot isn't ready in time</strong>, this step is skipped for that row - increase the Sleep, or add a retry loop.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+          <div class="step-title">Module 6 - Claude (filter accessories, find lowest price)</div>
+          <div class="step-desc">
+            <strong>This is what makes the number trustworthy.</strong> The <strong>Claude (Opus 4.8)</strong> module gets the keyword + the Shopping results and is told to:
+            <ul>
+              <li>Keep only the <strong>genuine product</strong> (exclude cases, ear tips, cables, chargers, covers, replacement parts)</li>
+              <li>Among those, find the <strong>lowest price</strong></li>
+            </ul>
+            It returns strict JSON:
+            <div class="code-block">{
+  "lowest_price": &lt;number&gt;,
+  "retailer": "&lt;tag&gt;",
+  "title": "&lt;title&gt;",
+  "product_count_valid": &lt;number&gt;
+}</div>
+            Connect your Anthropic credentials. Tweak the exclusion list in the prompt for your category (e.g. for a laptop: "exclude sleeves, chargers, docks").
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">9</div>
+        <div class="step-content">
+          <div class="step-title">Module 7 - Parse JSON</div>
+          <div class="step-desc">
+            Turns Claude's reply into clean fields - <code>lowest_price</code>, <code>retailer</code>, <code>title</code> - ready to write to the sheet. No setup needed.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">10</div>
+        <div class="step-content">
+          <div class="step-title">Module 8 - Google Sheets (write the price back)</div>
+          <div class="step-desc">
+            Updates the same row (matched by row number):
+            <ul>
+              <li><strong>A</strong> → the matched product title · <strong>B</strong> → lowest price · <strong>C</strong> → retailer · <strong>D</strong> → <code>{{now}}</code> timestamp</li>
+            </ul>
+            <strong>Want price history?</strong> Instead of overwriting, append a new dated row to a log sheet so you can chart price over time.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">11</div>
+        <div class="step-content">
+          <div class="step-title">Schedule, test, and activate</div>
+          <div class="step-desc">
+            Add a few products and click <strong>Run once</strong> (remember the ~5-min Sleep, so give it time). Check columns B-D fill in. Then set the scenario's <strong>schedule</strong> (daily is typical for price monitoring) and toggle it <strong>ON</strong>.
+            <br><br>
+            <strong>Add a drop alert:</strong> after the update, compare the new price to the old one and fire a Slack / email alert when it falls below your target.
+          </div>
+        </div>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>Troubleshooting</h3>
+        <table>
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>Snapshot content is empty</td><td>The snapshot wasn't ready when Module 5 ran. Increase the Sleep (300s → higher) or add a loop that re-checks metadata until <code>status = ready</code>.</td></tr>
+            <tr><td>Lowest price looks too low</td><td>An accessory slipped through. Tighten the exclusion list in Claude's prompt for your product category.</td></tr>
+            <tr><td>No matching products</td><td>The <code>title includes</code> filter is strict. Use a broader keyword, or the core model name without extra words.</td></tr>
+            <tr><td>Claude JSON won't parse</td><td>The prompt forces strict JSON with no code fences. If a model adds prose, add "Output ONLY the JSON object" (already in the prompt) or strip fences before Parse JSON.</td></tr>
+            <tr><td>Only 10 products processed</td><td>Raise the <strong>Limit</strong> on Module 1. Mind your Bright Data dataset usage.</td></tr>
+            <tr><td>Want a different country/currency</td><td>Use the matching regional Google Shopping dataset, or filter on <code>currency</code> in Module 2.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-n8n">
+    <div class="steps-container">
+
+      <div class="callout">
+        <strong>What this workflow does:</strong> On a schedule, n8n reads your products from a <strong>Google Sheet</strong>, kicks off a <strong>Bright Data</strong> Google Shopping snapshot per product, then <strong>polls until it's ready</strong>. It pulls the results, aggregates them, and <strong>Claude</strong> throws out accessories and picks the genuine lowest price. The row is updated with the price, retailer, and date.
+        <br><br>11 nodes: <strong>Schedule</strong> → <strong>Read Products</strong> → <strong>Init Snapshot</strong> → <strong>Wait</strong> → <strong>Check Status</strong> → <strong>IF Ready?</strong> → <strong>Get Data</strong> → <strong>Aggregate</strong> → <strong>Claude</strong> → <strong>Format</strong> → <strong>Update Sheet</strong>
+        <br><br>
+        <!-- TODO: replace href="#" with the n8n.io template URL -->
+        <a href="#" target="_blank" class="get-template-btn">
+          <img src="logos/n8n.svg" alt="n8n">
+          Get n8n template
+        </a>
+      </div>
+
+      <div class="callout" style="background:rgba(255,255,255,0.04); border-left-color:#6B7280; color:#9CA3AF;">
+        <strong>Smarter than the Make version:</strong> instead of one fixed 5-minute Sleep, this workflow <strong>polls in a loop</strong> (Wait 50s → check status → if not ready, loop back). It moves on the moment the snapshot is ready - faster on quick jobs, and it won't fail on slow ones.
+      </div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Get your Bright Data API token</div>
+          <div class="step-desc">
+            This template reads Bright Data's <strong>Google Shopping products</strong> dataset (<code>gd_m31f2k0d2m1bah4f3b</code>) - structured product records (title, price, currency, tags…). Grab your token at <a href="https://brightdata.com/cp/setting/users" target="_blank" style="color:#60A5FA;">brightdata.com/cp/setting/users</a> and paste it when you connect the Bright Data nodes.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Set up your Google Sheet</div>
+          <div class="step-desc">
+            One row per product. Columns:
+            <table class="sheet-table">
+              <thead><tr><th>Column</th><th>Filled by</th></tr></thead>
+              <tbody>
+                <tr><td>Product Keyword</td><td>you (e.g. <code>AirPods Pro 2</code>)</td></tr>
+                <tr><td>Lowest Price</td><td>the workflow</td></tr>
+                <tr><td>Retailer</td><td>the workflow</td></tr>
+                <tr><td>Last Checked</td><td>the workflow (date)</td></tr>
+              </tbody>
+            </table>
+            You only fill <strong>Product Keyword</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Node 1 - Schedule Trigger (daily 8am)</div>
+          <div class="step-desc">
+            Runs <strong>every morning at 8am</strong> by default - a clean daily price check. Click the node to change the cadence.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Node 2 - Read Products from Sheets</div>
+          <div class="step-desc">
+            Reads your product rows. Connect your Google account and point <code>documentId</code> to your sheet (replace <code>YOUR_GOOGLE_SHEET_ID</code>), sheet → <code>Sheet1</code>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Node 3 - Initiate Shopping Snapshot (Bright Data)</div>
+          <div class="step-desc">
+            The <strong>Bright Data</strong> node (Filter Dataset) queries the Google Shopping dataset for your keyword. Pre-configured:
+            <ul>
+              <li><strong>Dataset</strong> → <code>gd_m31f2k0d2m1bah4f3b</code></li>
+              <li><strong>Filter</strong> → <code>title includes {{ $json["Product Keyword"] }}</code></li>
+            </ul>
+            It's async - it returns a <code>snapshot_id</code>, not the data yet.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <div class="step-title">Nodes 4-6 - Poll until ready (Wait → Check → IF)</div>
+          <div class="step-desc">
+            This is the reliable part. Three nodes form a polling loop:
+            <ul>
+              <li><strong>Wait 50 Seconds</strong> - give the snapshot time to build</li>
+              <li><strong>Verify Snapshot Completion</strong> - <code>getSnapshotMetadata</code> returns the <code>status</code></li>
+              <li><strong>If Snapshot Ready</strong> - if <code>status = ready</code> → continue; otherwise → <strong>loop back to Wait</strong> and check again</li>
+            </ul>
+            So it keeps checking every 50s until Bright Data is done - no guessing, no fixed delay. Increase the Wait if you monitor many products at once.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <div class="step-title">Node 7 - Retrieve Shopping Data</div>
+          <div class="step-desc">
+            Once ready, <strong>getSnapshotContent</strong> downloads the product records as <strong>JSON</strong>. Pre-mapped to the snapshot <code>id</code>.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+          <div class="step-title">Node 8 - Combine Shopping Results (Aggregate)</div>
+          <div class="step-desc">
+            The <strong>Aggregate</strong> node collects all product items into one bundle so Claude can weigh them together in a single call. No setup needed.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">9</div>
+        <div class="step-content">
+          <div class="step-title">Node 9 - AI Determine Lowest Price (Claude)</div>
+          <div class="step-desc">
+            <strong>This is what makes the number trustworthy.</strong> The <strong>Claude (Opus 4.8)</strong> node gets the keyword + all results and is told to keep only the <strong>genuine product</strong> (exclude cases, ear tips, cables, chargers, covers, replacement parts), then pick the <strong>lowest price</strong>. It returns strict JSON:
+            <div class="code-block">{
+  "lowest_price": &lt;number&gt;,
+  "retailer": "&lt;tag&gt;",
+  "title": "&lt;title&gt;",
+  "product_count_valid": &lt;number&gt;
+}</div>
+            Connect your Anthropic credentials. Tweak the exclusion list in the prompt for your category.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">10</div>
+        <div class="step-content">
+          <div class="step-title">Node 10 - Prepare Data for Sheet (Set)</div>
+          <div class="step-desc">
+            A <strong>Set</strong> node parses Claude's JSON into clean columns - <strong>Lowest Price</strong>, <strong>Retailer</strong>, <strong>Product Title</strong>, <strong>Last Checked</strong> (today's date) - and carries the <code>row_number</code> so the right row gets updated.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">11</div>
+        <div class="step-content">
+          <div class="step-title">Node 11 - Update Prices in Sheets</div>
+          <div class="step-desc">
+            Writes <strong>Lowest Price, Retailer, Last Checked</strong> back to the matching row (matched on <code>row_number</code>).
+            <br><br>
+            <strong>Want price history?</strong> Swap the update for an append to a log sheet so each run adds a dated row - then chart price over time.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">12</div>
+        <div class="step-content">
+          <div class="step-title">Test and activate</div>
+          <div class="step-desc">
+            Add a few products and click <strong>Test workflow</strong> (the polling loop means a run takes a minute or two). Check the sheet fills with price, retailer, and date. When it works, toggle the workflow to <strong>Active</strong>.
+            <br><br>
+            <strong>Add a drop alert:</strong> add a Slack/email node after the update that fires when the new price is below your target.
+          </div>
+        </div>
+      </div>
+
+      <div class="troubleshooting">
+        <h3>Troubleshooting</h3>
+        <table>
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>Loop never exits</td><td>If the snapshot never reaches <code>ready</code>, check the dataset ID and your Bright Data plan. Add a max-retry counter to break the loop after N checks.</td></tr>
+            <tr><td>Lowest price looks too low</td><td>An accessory slipped through. Tighten the exclusion list in Claude's prompt for your product category.</td></tr>
+            <tr><td>No matching products</td><td>The <code>title includes</code> filter is strict. Use a broader keyword or the core model name only.</td></tr>
+            <tr><td>Claude JSON won't parse</td><td>The Set node does <code>JSON.parse</code> on Claude's text. If it errors, the model added prose - tighten the "ONLY JSON" instruction or strip fences first.</td></tr>
+            <tr><td>Wrong row updated</td><td>The update matches on <code>row_number</code>. Don't reorder the sheet mid-run.</td></tr>
+            <tr><td>Different country / currency</td><td>Use the matching regional Google Shopping dataset, or filter on <code>currency</code> in the snapshot node.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function switchTab(platform) {
+      document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById('tab-' + platform).classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
